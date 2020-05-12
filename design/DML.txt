@@ -1,0 +1,6 @@
+INSERT INTO category_tb VALUES(0, "없음");
+
+INSERT INTO member_tb VALUES(0, "admin", "관리자", "ehdgksmf", "admin@admin.admin", 0, NULL);
+
+
+INSERT INTO member_tb VALUES(DEFAULT, "Eodqjf5015", "우중이", "milk5239", "ekdzkfsha@naver.com", DEFAULT, NULL);
