@@ -41,3 +41,12 @@ ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (writer) REFERENCES memberca(member_id)
 ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE VIEW boardlist AS
+SELECT board_id, category_name AS category, title, 
+M.nickname AS writer, date, likes, views
+FROM board AS B
+LEFT JOIN member AS M ON(B.writer = M.member_id)
+LEFT JOIN category AS C ON(B.category = C.category_id)
+ORDER BY board_id desc;

@@ -3,14 +3,19 @@ package com.board.demo.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@DynamicInsert
+@DynamicUpdate
 public class Board implements Serializable {
 
     @Id
@@ -24,14 +29,14 @@ public class Board implements Serializable {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date")
     private String date;
 
     @Column(name = "likes", nullable = false)
-    private Long likes;
+    private long likes;
 
     @Column(name = "views", nullable = false)
-    private Long views;
+    private long views;
 
     @Column(name = "writer", nullable = false)
     private Long writer;

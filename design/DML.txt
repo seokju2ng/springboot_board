@@ -2,5 +2,14 @@ INSERT INTO category_tb VALUES(0, "없음");
 
 INSERT INTO member_tb VALUES(0, "admin", "관리자", "ehdgksmf", "admin@admin.admin", 0, NULL);
 
-
 INSERT INTO member_tb VALUES(DEFAULT, "Eodqjf5015", "우중이", "milk5239", "ekdzkfsha@naver.com", DEFAULT, NULL);
+
+
+
+
+SELECT board_id, category_name AS category, title, 
+M.nickname AS writer, date, likes, views
+FROM board AS B
+LEFT JOIN member AS M ON(B.writer = M.member_id)
+LEFT JOIN category AS C ON(B.category = C.category_id)
+ORDER BY board_id desc;
