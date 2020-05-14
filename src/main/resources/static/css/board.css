@@ -13,7 +13,7 @@ div.title {
     margin: 100px auto;
 }
 
-button.login{
+button#login{
     background:#ff99aa;
     color:#fff;
     border:none;
@@ -25,11 +25,11 @@ button.login{
     transition:800ms ease all;
     outline:none;
 }
-button.login:hover{
+button#login:hover{
     background:#fff;
     color:#ff99aa;
 }
-button.login:before,button.login:after{
+button#login:before,button#login:after{
     content:'';
     position:absolute;
     top:0;
@@ -39,13 +39,13 @@ button.login:before,button.login:after{
     background: #ff99aa;
     transition:400ms ease all;
 }
-button.login:after{
+button#login:after{
     right:inherit;
     top:inherit;
     left:0;
     bottom:0;
 }
-button.login:hover:before,button.login:hover:after{
+button#login:hover:before,button#login:hover:after{
     width:100%;
     transition:800ms ease all;
 }

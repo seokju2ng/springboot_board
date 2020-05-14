@@ -1,0 +1,19 @@
+admin ehdgksmf
+Eodqjf5015 milk5239
+gyetol gyetol
+tororo gyetol
+qlkjds124 asdkafs
+dkqmfk klrjdfa
+qkrwnsrb qkrwnsrb
+
+
+
+
+update member set pwd = '280b11f5bbb6d0de01f28f6dea8c540cb1a82ce93ea302683b5c520d0e3a8dda' where member_id = 0;
+update member set pwd = 'f7a2af06a35b3e37171faf4e9a3461238cb904be47e15ecd4bf37924f5d8ef39' where member_id = 2;
+update member set pwd = '89b87b170d04998a75f6c0ce74bcd840a57c916d76e6478f777674ec56b46a16' where member_id = 3;
+update member set pwd = '89b87b170d04998a75f6c0ce74bcd840a57c916d76e6478f777674ec56b46a16' where member_id = 9;
+update member set pwd = 'b4b5bd8670dcd943350dee7e2127d228700b6918f7c787e221bc85629e20c67b' where member_id = 10;
+update member set pwd = '913b71c2661aebd3868e714c09b021ab748b1d662d3334ab9ba0865db7c9e525' where member_id = 11;
+update member set pwd = '09ad62a4131224dde213a5a38abe1a6140ffd183ad31cc72c7288fc552341ebf' where member_id = 12;
+
