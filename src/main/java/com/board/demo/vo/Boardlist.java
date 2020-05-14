@@ -35,4 +35,7 @@ public class Boardlist implements Serializable {
 
     @Column(name = "views")
     private long views;
+
+    @Column(name = "replies")
+    private long replies;
 }

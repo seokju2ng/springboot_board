@@ -26,10 +26,10 @@ public class BoardRepositoryTest {
     public void create(){
         Board board = new Board();
 
-        board.setCategory(1L);
-        board.setTitle("이건 Dynamic insert");
+        board.setCategory(2L);
+        board.setTitle("따끈 따끈한 글이랍니다");
         board.setContent("내용무");
-        board.setWriter(3L);
+        board.setWriter(12L);
 
         Board newBoard = boardRepository.save(board);
         System.out.println(newBoard);

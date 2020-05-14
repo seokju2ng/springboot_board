@@ -6,12 +6,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Board</title>
     <link rel="stylesheet" href="/static/css/board.css"/>
+    <script src="http://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="/static/js/board.js"></script>
 </head>
 <body>
     <div class="wrap">
-        <div class="title">
-            <p>게시판</p>
+        <div class="login">
+            <button class="login">로그인</button>
         </div>
+        <div class="title">게시판</div>
         <div class="board">
             <table class="board">
                 <tr>
@@ -22,38 +26,22 @@
                     <th>조회</th>
                     <th>좋아요</th>
                 </tr>
+            <c:forEach var="board" items="${boards}">
                 <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
+                    <td>${board.boardId}</td>
+                    <td>
+                        <span class="category">[${board.category}]</span>
+                            ${board.title}
+                    <c:if test="${board.replies != 0}">
+                        <span class="replies">[${board.replies}]</span>
+                    </c:if>
+                    </td>
+                    <td>${board.writer}</td>
+                    <td>${board.date}</td>
+                    <td>${board.views}</td>
+                    <td>${board.likes}</td>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                </tr>
+            </c:forEach>
             </table>
         </div>
     </div>

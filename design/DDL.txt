@@ -1,3 +1,4 @@
+### TABLE LIST ###
 CREATE TABLE member (
 member_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 id VARCHAR(20) NOT NULL UNIQUE,
@@ -43,10 +44,14 @@ ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+
+### VIEW LIST ###
 CREATE VIEW boardlist AS
 SELECT board_id, category_name AS category, title, 
-M.nickname AS writer, date, likes, views
+M.nickname AS writer, B.date, likes, views, ifnull(rp, 0) AS replies
 FROM board AS B
 LEFT JOIN member AS M ON(B.writer = M.member_id)
 LEFT JOIN category AS C ON(B.category = C.category_id)
+LEFT JOIN (select board, count(*) AS rp from reply group by board) AS R
+ON(B.board_id = R.board)
 ORDER BY board_id desc;

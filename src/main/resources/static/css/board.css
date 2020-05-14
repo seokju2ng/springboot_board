@@ -1,11 +1,85 @@
 div.wrap  { height: 700px; }
-div.title { height: 30%; text-align: center; font-size: 30px; vertical-align: bottom;}
-div.board { height: 70%; }
+div.board { height: 90%; }
+div.login {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+div.title {
+    height: 10%;
+    text-align: center;
+    font-size: 30px;
+    vertical-align: bottom;
+    margin: 100px auto;
+}
+
+button.login{
+    background:#ff99aa;
+    color:#fff;
+    border:none;
+    position:relative;
+    height:40px;
+    font-size:1em;
+    padding:0 2em;
+    cursor:pointer;
+    transition:800ms ease all;
+    outline:none;
+}
+button.login:hover{
+    background:#fff;
+    color:#ff99aa;
+}
+button.login:before,button.login:after{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    height:2px;
+    width:0;
+    background: #ff99aa;
+    transition:400ms ease all;
+}
+button.login:after{
+    right:inherit;
+    top:inherit;
+    left:0;
+    bottom:0;
+}
+button.login:hover:before,button.login:hover:after{
+    width:100%;
+    transition:800ms ease all;
+}
+
+.swal2-input {
+    text-align: center;
+}
+
+a {
+    color: #ff7799;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ff6688;
+}
 
 table.board {
-    width : 1000px;
+    width : 100%;
     border-spacing: 0px;
     margin: 0 auto;
+}
+
+@media (max-width: 740px) {
+    table.board {
+        width: 740px;
+    }
+}
+
+@media (min-width: 1000px) {
+    table.board {
+        width: 1000px;
+    }
 }
 
 table.board th {
@@ -30,3 +104,11 @@ table.board tr td:nth-child(3){ width: 13%; }
 table.board tr td:nth-child(4){ width: 12%; text-align: center;}
 table.board tr td:nth-child(5){ width: 8%; text-align: center;}
 table.board tr td:last-child{ width: 8%; text-align: center;}
+
+table.board tr td:nth-child(2):hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+span.category { color: #888888; }
+span.replies { color: red; }

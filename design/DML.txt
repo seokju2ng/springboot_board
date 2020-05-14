@@ -1,15 +1,32 @@
-INSERT INTO category_tb VALUES(0, "없음");
+INSERT INTO category VALUES(0, "없음");
 
-INSERT INTO member_tb VALUES(0, "admin", "관리자", "ehdgksmf", "admin@admin.admin", 0, NULL);
+INSERT INTO member VALUES
+(default, "qlkjds124", "뿌까뿌", "asdkafs", "qlkjds124@naver.com", default, NULL);
 
-INSERT INTO member_tb VALUES(DEFAULT, "Eodqjf5015", "우중이", "milk5239", "ekdzkfsha@naver.com", DEFAULT, NULL);
+INSERT INTO member VALUES
+(DEFAULT, "dkqmfk", "아브라카다브라", "klrjdfa", "dkqmfk@daum.net", DEFAULT, NULL);
+
+INSERT INTO member VALUES
+(DEFAULT, "qkrwnsrb", "박준규", "qkrwnsrb", "qkrwnsrb@daum.net", DEFAULT, NULL);
 
 
+INSERT INTO reply VALUES(default, default, default, "ㅋㅋㅋㅋㅋㅋㅋ", default, 6, 3);
+INSERT INTO reply VALUES(default, default, default, "머래", default, 6, 10);
+INSERT INTO reply VALUES(default, default, default, "이게 먼솔?", default, 6, 11);
+INSERT INTO reply VALUES(default, 3, default, "ㅋㅋㅋㅋㅋㅋㅋ", default, 6, 2);
+INSERT INTO reply VALUES(default, 1, default, "아니 ㅡㅡ뭐여", default, 6, 9);
+INSERT INTO reply VALUES(default, 1, 1, "ㅋㅋㅋㅋ앜ㅋㅋㅋㅋ", default, 6, 3);
+
+INSERT INTO reply VALUES(default, default, default, "나도 테스트", default, 3, 2);
+INSERT INTO reply VALUES(default, 7, default, "나도 테스트1", default, 3, 3);
+INSERT INTO reply VALUES(default, 7, 1, "나도 테스트2", default, 3, 2);
 
 
 SELECT board_id, category_name AS category, title, 
-M.nickname AS writer, date, likes, views
+M.nickname AS writer, B.date, likes, views, ifnull(rp, 0) AS replies
 FROM board AS B
 LEFT JOIN member AS M ON(B.writer = M.member_id)
 LEFT JOIN category AS C ON(B.category = C.category_id)
+LEFT JOIN (select board, count(*) AS rp from reply group by board) AS R
+ON(B.board_id = R.board)
 ORDER BY board_id desc;
