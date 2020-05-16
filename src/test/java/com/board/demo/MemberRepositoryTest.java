@@ -1,10 +1,9 @@
 package com.board.demo;
 
-//import org.junit.jupiter.api.Test;
-
 import com.board.demo.repository.MemberRepository;
 import com.board.demo.util.HashFunction;
 import com.board.demo.vo.Member;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,106 +13,104 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 import java.util.Optional;
 
-
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MemberRepositoryTest {
-
     @Autowired
     private MemberRepository memberRepository;
 
     @Test
+    @Transactional
     public void create() throws NoSuchAlgorithmException {
-        Member member = new Member();
-        member.setId("ehddnwnd");
-        member.setEmail("ehddnwnd@naver.com");
-        member.setPwd(HashFunction.sha256("ehdgksmf"));
-        member.setNickname("김석중짱짱맨");
-        Member newMember = memberRepository.save(member);
-        System.out.println(newMember);
+        String id = "user";
+        String pwd = "password";
+        String email = "email@email.com";
+        String nick = "nickname";
+
+        Member member = Member.builder()
+                .id(id)
+                .pwd(HashFunction.sha256(pwd))
+                .email(email)
+                .nickname(nick)
+                .build();
+
+        try {
+            Member newMember = memberRepository.save(member);
+            log.info("New Member[" + newMember.getMemberId() + " : "+ id + "] has just signed up.");
+        } catch (Exception e) {
+            log.warn(e.toString());
+        }
     }
 
     @Test
     public void read() {
-        Optional<Member> member = memberRepository.findById(0L);
-        member.ifPresent(selectMember -> {
-            System.out.println("member: " + selectMember);
-        });
+        long memberId = 1L;
+        String title = "select member(" + memberId + ") : ";
+        Optional<Member> member = memberRepository.findById(memberId);
+        member.ifPresent(selectMember -> log.info(title + selectMember));
     }
 
     @Test
-//    @Transactional
+    @Transactional
     public void update() {
-        Optional<Member> member = memberRepository.findById(9L);
+        Optional<Member> member = memberRepository.findById(1L);
 
         member.ifPresent(selectMember -> {
-            selectMember.setId("tororo");
-            selectMember.setNickname("토로로");
+            String id = "update_id";
+            String nick = "update_nick";
+            selectMember.setId(id);
+            selectMember.setNickname(nick);
             Member newMember = memberRepository.save(selectMember);
-            System.out.println("user : " + newMember);
+            log.info("update user : " + newMember);
         });
     }
 
     @Test
     @Transactional
     public void delete() {
-        Optional<Member> member = memberRepository.findById(7L);
+        long id = 7L;
+
+        Optional<Member> member = memberRepository.findById(id);
 
         Assert.assertTrue(member.isPresent());
-        member.ifPresent(selectMember -> {
-            memberRepository.delete(selectMember);
-        });
+        member.ifPresent(memberRepository::delete);
 
-        Optional<Member> deleteMember = memberRepository.findById(7L);
+        Optional<Member> deleteMember = memberRepository.findById(id);
         Assert.assertFalse(deleteMember.isPresent());
     }
 
     @Test
-    public void loginSuccess() {
-        String id = "Eodqjf5015";
-        String pwd = null;
-        try {
-            pwd = HashFunction.sha256("milk5239");
-            Member member = memberRepository.findByIdAndPwd(id, pwd);
-            System.out.println(member);
-            if (member != null) {
-                member.setAttendance(member.getAttendance() + 1);
-                memberRepository.save(member);
-            }
-            Assert.assertNotNull(member);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-    }
+    public void login() throws NoSuchAlgorithmException {
+        String id = "gyetol";
+        String pwd = "gyetol2";
+        Optional<Member> loginMember = memberRepository.findByIdAndPwd(id, HashFunction.sha256(pwd));
 
-    @Test
-    public void loginFail(){
-        String id = "Eodqjf5015";
-        String pwd = null;
-        try {
-            pwd = HashFunction.sha256("milk5238");
-            Member member = memberRepository.findByIdAndPwd(id, pwd);
-            System.out.println(member);
-            Assert.assertNull(member);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        if (loginMember.isPresent()) {
+            Member member = loginMember.get();
+            log.info("Successfully logged in");
+            log.info("Attendance before update : " + member.getAttendance());
+            member.setAttendance(member.getAttendance() + 1);
+            member = memberRepository.save(member);
+            log.info("Attendance after update : " + member.getAttendance());
+        } else {
+            log.warn("Login failed");
         }
     }
 
     @Test
     public void checkDuplicate() {
-        String id = "ehddnwnd";
+        String id = "ehddnwnd2";
 
-        Member member = memberRepository.findById(id);
-        Assert.assertNotNull(member);
-        System.out.println(member);
+        Optional<Member> member = memberRepository.findById(id);
 
-        id = "lwkajefsda";
-
-        member = memberRepository.findById(id);
-        Assert.assertNull(member);
-        System.out.println(member);
+        if (member.isPresent()) {
+            log.info("[" + id + "] is duplicate ");
+        } else {
+            log.info("[" + id + "] is available");
+        }
     }
 }

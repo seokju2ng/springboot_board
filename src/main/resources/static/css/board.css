@@ -1,5 +1,5 @@
-div.wrap  { height: 700px; }
-div.board { height: 90%; }
+/*div.wrap  { height: 700px; }*/
+/*div.board { height: 90%; }*/
 div.login {
     position: absolute;
     right: 10px;
@@ -54,14 +54,15 @@ button#login:hover:before,button#login:hover:after{
     text-align: center;
 }
 
-a {
+.join, .find-pwd {
     color: #ff7799;
     font-weight: bold;
-    text-decoration: none;
 }
 
-a:hover {
+.join:hover, .find-pwd:hover {
     color: #ff6688;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 table.board {
@@ -112,3 +113,8 @@ table.board tr td:nth-child(2):hover{
 
 span.category { color: #888888; }
 span.replies { color: red; }
+
+class swal2-inputerror
+aria-invalid="true"
+aria-describedby="swal2-validation-message"
+style="display:flex;"

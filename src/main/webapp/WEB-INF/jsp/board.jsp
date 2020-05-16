@@ -23,7 +23,7 @@
                 </c:otherwise>
             </c:choose>
         </div>
-        <div class="title">게시판</div>
+        <div class="title">석주잉 게시판</div>
         <div class="board">
             <table class="board">
                 <tr>
