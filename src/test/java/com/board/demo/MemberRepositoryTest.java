@@ -101,4 +101,19 @@ public class MemberRepositoryTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void checkDuplicate() {
+        String id = "ehddnwnd";
+
+        Member member = memberRepository.findById(id);
+        Assert.assertNotNull(member);
+        System.out.println(member);
+
+        id = "lwkajefsda";
+
+        member = memberRepository.findById(id);
+        Assert.assertNull(member);
+        System.out.println(member);
+    }
 }
