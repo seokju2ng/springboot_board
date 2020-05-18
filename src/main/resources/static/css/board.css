@@ -114,7 +114,3 @@ table.board tr td:nth-child(2):hover{
 span.category { color: #888888; }
 span.replies { color: red; }
 
-class swal2-inputerror
-aria-invalid="true"
-aria-describedby="swal2-validation-message"
-style="display:flex;"
