@@ -24,6 +24,9 @@ public class Boardlist implements Serializable {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "profile_photo")
+    private String profile;
+
     @Column(name = "writer")
     private String writer;
 

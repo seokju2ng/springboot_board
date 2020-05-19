@@ -2,6 +2,7 @@ package com.board.demo;
 
 import com.board.demo.repository.CategoryRepository;
 import com.board.demo.vo.Category;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CategoryRepositoryTest {
@@ -20,18 +23,18 @@ public class CategoryRepositoryTest {
 
     @Test
     public void create(){
-        Category category = new Category();
-        category.setCategoryName("잡담");
-        Category newCategory = categoryRepository.save(category);
-        System.out.println(newCategory);
+        String categoryName = "여행";
+        Category category = Category.builder()
+                .categoryName(categoryName)
+                .build();
+        category = categoryRepository.save(category);
+        log.info(category.toString());
     }
 
     @Test
-    public void read(){
-        Optional<Category> category = categoryRepository.findById(1L);
-        category.ifPresent(selectCategory ->{
-            System.out.println("category: "+selectCategory);
-        });
+    public void readAll(){
+        List<Category> category = categoryRepository.findAll();
+        category.forEach(x -> log.info(x.toString()));
     }
 
     @Test

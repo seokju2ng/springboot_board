@@ -1,0 +1,33 @@
+div.form {
+    margin: 50px;
+    margin-top: 90px;
+    border: 1px solid #ff7799;
+    border-radius: 10px;
+    background: #fff9f9;
+    padding: 20px;
+}
+div.btn-submit {
+    text-align: center;
+}
+
+input.swal2-input {
+    background: white;
+}
+
+textarea.swal2-textarea {
+    background: white;
+    height: 270px;
+}
+
+select.swal2-select {
+    background: white;
+    border: 1px solid #d9d9d9;
+    min-width: 30%;
+}
+
+span.subtitle {
+    display: block;
+    margin-left: 5px;
+    margin-top: 15px;
+}
+

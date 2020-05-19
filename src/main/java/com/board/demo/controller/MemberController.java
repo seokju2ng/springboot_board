@@ -15,15 +15,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
 
+import static com.board.demo.util.Constants.*;
+
 @Slf4j
 @RestController
 @RequestMapping("/member")
 public class MemberController {
-    private final int DUPLICATE_ID = -3;
-    private final int INVALID_APPROACH = -2;
-    private final int FAIL = -1;
-    private final int ADMIN = 0;
-    private final int SUCCESS = 1;
 
     @Autowired
     private MemberService memberService;
@@ -44,16 +41,16 @@ public class MemberController {
         JSONObject res = new JSONObject();
 
         if (Objects.isNull(loginMember)) {
-            res.put("result", FAIL);
+            res.put(RESULT, FAIL);
             log.info("** [" + id + "] Failed to log in **");
         } else {
             HttpSession session = request.getSession();
             session.setAttribute("loginMember", loginMember);
             if (loginMember.getMemberId() == 0) {
-                res.put("result", ADMIN);
+                res.put(RESULT, ADMIN);
                 log.info("** ADMIN has logged in **");
             } else {
-                res.put("result", SUCCESS);
+                res.put(RESULT, SUCCESS);
                 res.put("nick", loginMember.getNickname());
                 log.info("** [" + id + "] has logged in **");
             }
@@ -72,11 +69,11 @@ public class MemberController {
 
         if (Objects.isNull(member)) {
             log.warn("!! Invalid approach !!");
-            res.put("result", INVALID_APPROACH);
+            res.put(RESULT, INVALID_APPROACH);
         } else {
             log.info("** [" + member.getId() + "] has logged out **");
             session.invalidate();
-            res.put("result", SUCCESS);
+            res.put(RESULT, SUCCESS);
             res.put("nick", member.getNickname());
         }
         response.setContentType("application/json; charset=utf-8");
@@ -89,10 +86,10 @@ public class MemberController {
         JSONObject res = new JSONObject();
 
         if (memberService.isDuplicate(id)) {
-            res.put("result", DUPLICATE_ID);
+            res.put(RESULT, DUPLICATE_ID);
             log.info("Duplicate id : " + id);
         } else {
-            res.put("result", SUCCESS);
+            res.put(RESULT, SUCCESS);
             log.info("Available id : " + id);
         }
         response.setContentType("application/json; charset=utf-8");
@@ -110,10 +107,10 @@ public class MemberController {
         try {
             Member newMember = memberService.join(id, pwd, email, nick);
             log.info("New Member[ " + newMember.getMemberId() + " : " + id + " ] has just signed up.");
-            res.put("result", SUCCESS);
+            res.put(RESULT, SUCCESS);
         } catch (Exception e) {
             log.warn(e.toString());
-            res.put("result", FAIL);
+            res.put(RESULT, FAIL);
         }
 
         response.setContentType("application/json; charset=utf-8");

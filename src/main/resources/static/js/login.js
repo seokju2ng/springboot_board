@@ -1,17 +1,19 @@
-const DUPLICATE = -3;
-const INVALID_APPROACH = -2;
-const FAIL = -1;
-const ADMIN = 0;
-const SUCCESS = 1;
-
+const LOG_IN_BTN = 'login';
+const LOG_OUT_BTN = 'logout';
+const JOIN_BTN = 'join';
+const FIND_PWD_BTN = 'find-pwd';
 
 $.btnClick = function (btn) {
     let func = null;
-    switch (btn.className) {
-        case 'login' : func = $.login; break;
-        case 'logout' : func = $.logout; break;
-        case 'join' : func = $.join; break;
-        case 'find-pwd' : func = $.findPwd; break;
+    switch (btn.id) {
+        case LOG_IN_BTN :
+            func = $.login; break;
+        case LOG_OUT_BTN :
+            func = $.logout; break;
+        case JOIN_BTN :
+            func = $.join; break;
+        case FIND_PWD_BTN :
+            func = $.findPwd; break;
         default : return;
     }
     func();
@@ -129,7 +131,7 @@ $.logout = function () {
                         showConfirmButton: false,
                         timer: 1500
                     }).then(function (){
-                        location.replace("/");
+                        location.replace("/board");
                     });
                     break;
                 case INVALID_APPROACH:
@@ -140,7 +142,7 @@ $.logout = function () {
     });
 }
 
-$.login = async function () {
+$.login = async function (write) {
     let join = '<span class="join" onclick="$.btnClick(this)">회원가입</span>';
     let findPwd = '<span class="find-pwd" onclick="$.btnClick(this)">비밀번호 찾기</span>'
 
@@ -167,8 +169,11 @@ $.login = async function () {
                 case SUCCESS:
                     Swal.fire('로그인 성공', data.nick + '님 안녕하세요.', 'success')
                         .then(function(){
-                            $('button#login').attr('class', 'logout');
+                            if (write) {
+                                location.href = "/board/write";
+                            }
                             $('button#login').text("로그아웃");
+                            $('button#login').attr('id', 'logout');
                         });
                     break;
                 default :

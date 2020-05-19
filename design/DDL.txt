@@ -47,7 +47,7 @@ ON DELETE CASCADE ON UPDATE CASCADE
 
 ### VIEW LIST ###
 CREATE VIEW boardlist AS
-SELECT board_id, category_name AS category, title, 
+SELECT board_id, category_name AS category, title, profile_photo,
 M.nickname AS writer, B.date, likes, views, ifnull(rp, 0) AS replies
 FROM board AS B
 LEFT JOIN member AS M ON(B.writer = M.member_id)

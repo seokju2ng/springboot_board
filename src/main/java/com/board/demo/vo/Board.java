@@ -1,6 +1,7 @@
 package com.board.demo.vo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @Data
 @DynamicInsert
 @DynamicUpdate
+@Builder
 public class Board implements Serializable {
 
     @Id
@@ -23,7 +25,7 @@ public class Board implements Serializable {
     private Long boardId;
 
     @Column(name = "title", nullable = false)
-    private String Title;
+    private String title;
 
     @Column(name = "content", nullable = false)
     private String content;

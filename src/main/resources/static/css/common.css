@@ -1,0 +1,45 @@
+div.login {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.button1 {
+    background:#ff99aa;
+    color:#fff;
+    border:none;
+    position:relative;
+    height:35px;
+    font-size:1em;
+    padding:0 2em;
+    cursor:pointer;
+    transition:800ms ease all;
+    outline:none;
+}
+.button1:hover{
+    background:#fff;
+    color:#ff99aa;
+}
+.button1:before,
+.button1:after{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    height:2px;
+    width:0;
+    background: #ff99aa;
+    transition:400ms ease all;
+}
+.button1:after{
+    right:inherit;
+    top:inherit;
+    left:0;
+    bottom:0;
+}
+.button1:hover:before,
+.button1:hover:after{
+    width:100%;
+    transition:800ms ease all;
+}
+
