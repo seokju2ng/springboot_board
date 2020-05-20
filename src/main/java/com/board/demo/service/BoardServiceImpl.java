@@ -6,6 +6,7 @@ import com.board.demo.util.Conversion;
 import com.board.demo.vo.Board;
 import com.board.demo.vo.Boardlist;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,18 +24,15 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
-    public List<Boardlist> getList(String category, int page, int size) {
-        List<Boardlist> boardlist = null;
+    public Page<Boardlist> getList(String category, int page, int size) {
+        Page<Boardlist> boardlistPage = null;
         PageRequest pageRequest = PageRequest.of(page, size);
         if (ALL_POSTS.equals(category)) {
-            boardlist = boardlistRepository.findAll(pageRequest).getContent();
+            boardlistPage = boardlistRepository.findAll(pageRequest);
         } else {
-            boardlist = boardlistRepository.findAllByCategory(category, pageRequest).getContent();
+            boardlistPage = boardlistRepository.findAllByCategory(category, pageRequest);
         }
-
-        Conversion.convertDateFormat(boardlist);
-        Conversion.convertTitleLength(boardlist);
-        return boardlist;
+        return boardlistPage;
     }
 
     @Override

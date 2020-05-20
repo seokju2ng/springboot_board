@@ -36,4 +36,8 @@ public class Conversion {
             }
         });
     }
+
+    public static int calcStartPage(int page) {
+        return ((page - 1) / 10) * 10 + 1;
+    }
 }

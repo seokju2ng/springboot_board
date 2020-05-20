@@ -2,12 +2,14 @@ package com.board.demo.controller;
 
 import com.board.demo.service.BoardService;
 import com.board.demo.service.CategoryService;
+import com.board.demo.util.Conversion;
 import com.board.demo.vo.Boardlist;
 import com.board.demo.vo.Category;
 import com.board.demo.vo.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +30,7 @@ import static com.board.demo.util.Constants.*;
 @RequestMapping("/board")
 public class BoardController {
     private final String DEFAULT_CATEGORY = "전체보기";
-    private final String DEFAULT_PAGE = "0";
+    private final String DEFAULT_PAGE = "1";
     private final String DEFAULT_LIST_SIZE = "10";
 
     @Autowired
@@ -43,13 +45,22 @@ public class BoardController {
             @RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page,
             @RequestParam(defaultValue = DEFAULT_LIST_SIZE, required = false) Integer size) {
         ModelAndView mav = new ModelAndView();
-        List<Boardlist> boards = boardService.getList(category, page-1, size);
+        Page<Boardlist> boardlistPage = boardService.getList(category, page - 1, size);
         List<Category> categories = categoryService.getList();
+        int totalPage = boardlistPage.getTotalPages();
+        int startPage = Conversion.calcStartPage(page);
+        List<Boardlist> boards = boardlistPage.getContent();
+        Conversion.convertDateFormat(boards);
+        Conversion.convertTitleLength(boards);
+
         mav.setViewName("board");
         mav.addObject("boards", boards);
         mav.addObject("categories", categories);
         mav.addObject("selectCategory", category);
         mav.addObject("selectSize", size);
+        mav.addObject("curPage", page);
+        mav.addObject("totalPage", totalPage);
+        mav.addObject("startPage", startPage);
         return mav;
     }
 

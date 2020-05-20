@@ -48,6 +48,14 @@
             <div>
                 <select id="list-size" class="swal2-select">
                     <c:choose>
+                        <c:when test="${selectSize == 1}">
+                            <option value="1" selected>1개씩 보기</option>
+                        </c:when>
+                        <c:otherwise>
+                            <option value="1">1개씩 보기</option>
+                        </c:otherwise>
+                    </c:choose>
+                    <c:choose>
                         <c:when test="${selectSize == 5}">
                             <option value="5" selected>5개씩 보기</option>
                         </c:when>
@@ -126,7 +134,28 @@
             </table>
         </div>
         <div class="bottom-bar">
-            <button id="write" class="button1">글쓰기</button>
+            <div>
+                <button id="write" class="button1">글쓰기</button>
+            </div>
+            <div>
+                <c:if test="${startPage != 1}">
+                    <button id="prev" class="button1" onclick="$.prev(${startPage})">이전</button>
+                </c:if>
+                <c:choose>
+                    <c:when test="${totalPage > (startPage + 9)}">
+                        <c:set var="endPage" value="${startPage + 9}"></c:set>
+                    </c:when>
+                    <c:otherwise>
+                        <c:set var="endPage" value="${totalPage}"></c:set>
+                    </c:otherwise>
+                </c:choose>
+                <c:forEach begin="${startPage}" end="${endPage}" varStatus="status">
+                    <span class="page-num <c:if test="${status.index == curPage}">cur-page</c:if>" onclick="$.reload(this.innerHTML)">${status.index}</span>
+                </c:forEach>
+                <c:if test="${endPage != totalPage}">
+                    <button id="next" class="button1" onclick="$.next(${endPage})">다음</button>
+                </c:if>
+            </div>
         </div>
     </div>
 </body>

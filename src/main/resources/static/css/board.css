@@ -21,6 +21,8 @@ div.bottom-bar {
     width: 900px;
     margin: 0 auto;
     margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 div.top-bar > div {
@@ -30,7 +32,7 @@ div.top-bar > div {
 div.top-bar > div:first-child {
     text-align: left;
 }
-div.top-bar > div:last-child {
+div.top-bar > div:last-child, div.bottom-bar > div:last-child {
     text-align: right;
 }
 div.top-bar > div > select.swal2-select {
@@ -111,3 +113,10 @@ table.board tr td:nth-child(2):hover{
 span.category { color: #888888; }
 span.replies { color: red; }
 
+span.page-num { margin: 5px; }
+span.page-num:hover{ cursor: pointer; }
+
+.cur-page {
+    color: #ff0066;
+    font-weight: bold;
+}
