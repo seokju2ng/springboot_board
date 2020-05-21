@@ -7,3 +7,16 @@ $.btnClick1 = function (btn) {
         default : return;
     }
 };
+
+function resize(obj) {
+    obj.style.height = "0px";
+    obj.style.height = (10+obj.scrollHeight)+"px";
+}
+
+function viewArticle(articleNo) {
+    location.href = "/board/"+articleNo;
+}
+
+function viewBoard() {
+    location.href = "/board";
+}

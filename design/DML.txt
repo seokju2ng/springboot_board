@@ -41,3 +41,7 @@ ORDER BY parent, reply_id;
 SELECT * FROM reply ORDER BY parent, reply_id;
 
 UPDATE reply SET parent = reply_id WHERE parent=0;
+
+SELECT * FROM (SELECT * FROM board list WHERE board_id < 16 ORDER BY board_id desc LIMIT 1) A
+UNION
+SELECT * FROM (SELECT * FROM board list WHERE board_id > 16 ORDER BY board_id asc LIMIT 1) B;

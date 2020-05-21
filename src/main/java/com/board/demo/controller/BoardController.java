@@ -4,10 +4,8 @@ import com.board.demo.service.BoardService;
 import com.board.demo.service.CategoryService;
 import com.board.demo.service.ReplyService;
 import com.board.demo.util.Conversion;
-import com.board.demo.vo.Boardlist;
-import com.board.demo.vo.Category;
-import com.board.demo.vo.Member;
-import com.board.demo.vo.Replylist;
+import com.board.demo.util.CurrentArticle;
+import com.board.demo.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,12 +123,15 @@ public class BoardController {
         if (Objects.isNull(article)) {
             return showErrorPage();
         }
+        CurrentArticle currentArticle = boardService.getPrevAndNextArticle(boardId);
         List<Replylist> replies = replyService.getRepliesByBoardId(boardId);
 
         ModelAndView mav = new ModelAndView();
         mav.setViewName("view_article");
         mav.addObject("article", article);
         mav.addObject("replies", replies);
+        mav.addObject("prev_article", currentArticle.getPrev());
+        mav.addObject("next_article", currentArticle.getNext());
         return mav;
     }
 

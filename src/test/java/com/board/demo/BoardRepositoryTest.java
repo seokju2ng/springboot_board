@@ -2,14 +2,13 @@ package com.board.demo;
 
 import com.board.demo.repository.BoardRepository;
 import com.board.demo.repository.BoardlistRepository;
-import com.board.demo.repository.ReplyRepository;
 import com.board.demo.repository.ReplylistRepository;
-import com.board.demo.util.Conversion;
+import com.board.demo.util.CurrentArticle;
 import com.board.demo.vo.Board;
 import com.board.demo.vo.Boardlist;
-import com.board.demo.vo.Reply;
 import com.board.demo.vo.Replylist;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +90,22 @@ public class BoardRepositoryTest {
             replies.forEach(reply -> log.info(reply.toString()));
         } else {
             log.info("Board id = '" + board_id + "' is not exist.");
+        }
+    }
+
+    @Test
+    public void selectPrevAndNextArticle() {
+        long board_id = 7L;
+        List<Board> boards = boardRepository.findPrevAndNextBoardIdByBoardId(board_id);
+        Assert.assertNotEquals(boards.size(), 0);
+//        log.info(boards.toString());
+        if (boards.size() == 1) {
+            log.info("?? : " + boards.get(0).getBoardId());
+        } else {
+            long prevArticle = boards.get(0).getBoardId();
+            long nextArticle = boards.get(1).getBoardId();
+            log.info("prev Article No : " + prevArticle);
+            log.info("next Article No : " + nextArticle);
         }
     }
 }

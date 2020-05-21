@@ -44,13 +44,11 @@ public class Conversion {
     }
 
     public static void convertContent(Article article) {
-        System.out.println("convertContent()");
         String oldContent = article.getContent();
         article.setContent(oldContent.replace("\n", "<br>"));
     }
 
     public static void convertDateFormatForArticle(Article article) {
-        System.out.println("convertDateFormatForArticle()");
         article.setDate(article.getDate().substring(DATE_START, TIME_END));
     }
 }

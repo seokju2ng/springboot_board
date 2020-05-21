@@ -1,9 +1,8 @@
 package com.board.demo.service;
 
+import com.board.demo.util.CurrentArticle;
 import com.board.demo.vo.Boardlist;
 import org.springframework.data.domain.Page;
-
-import java.util.Optional;
 
 public interface BoardService {
     Page<Boardlist> getList(String category, int page, int size);
@@ -13,4 +12,6 @@ public interface BoardService {
     Boardlist getPostById(long boardId);
 
     boolean addViews(long boardId);
+
+    CurrentArticle getPrevAndNextArticle(long boardId);
 }

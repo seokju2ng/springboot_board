@@ -86,7 +86,9 @@
                                         </div>
                                         <div class="comment_info_box">
                                             <span class="comment_info_date">${reply.date}</span>
+                                            <c:if test="${loginMember != null}">
                                             <span class="commente_info_button">답글쓰기</span>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>
@@ -103,6 +105,19 @@
                     </div>
                 </div>
                 </c:if>
+            </div>
+            <div class="article_bottom_bar">
+                <div class="article_bottom_left">
+                    <button class="button1" onclick="viewBoard()">목록</button>
+                </div>
+                <div class="article_bottom_right">
+                    <c:if test="${prev_article != 0}">
+                    <button class="button1" onclick="viewArticle(${prev_article})">이전글</button>
+                    </c:if>
+                    <c:if test="${next_article != 0}">
+                    <button class="button1" onclick="viewArticle(${next_article})">다음글</button>
+                    </c:if>
+                </div>
             </div>
         </div>
     </div>

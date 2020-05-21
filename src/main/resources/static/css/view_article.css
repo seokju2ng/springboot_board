@@ -130,3 +130,16 @@ div.views {
 .comment_writer_button {
     text-align: right;
 }
+.article_container {
+    margin-bottom: 15px;
+}
+.article_bottom_bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.article_bottom_left {
+    text-align: left;
+}
+.article_bottom_right {
+    text-align: right;
+}
