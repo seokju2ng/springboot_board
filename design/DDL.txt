@@ -1,4 +1,5 @@
 ### TABLE LIST ###
+
 CREATE TABLE member (
 member_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 id VARCHAR(20) NOT NULL UNIQUE,
@@ -45,13 +46,24 @@ ON DELETE CASCADE ON UPDATE CASCADE
 
 
 
+
+
 ### VIEW LIST ###
+
 CREATE VIEW boardlist AS
-SELECT board_id, category_name AS category, title, profile_photo,
-M.nickname AS writer, B.date, likes, views, ifnull(rp, 0) AS replies
+SELECT 
+board_id, category_name AS category, title, content, B.date, M.member_id AS writer_id, 
+M.nickname AS writer_nick, profile_photo, likes, views, ifnull(rp, 0) AS replies
 FROM board AS B
 LEFT JOIN member AS M ON(B.writer = M.member_id)
 LEFT JOIN category AS C ON(B.category = C.category_id)
 LEFT JOIN (select board, count(*) AS rp from reply group by board) AS R
 ON(B.board_id = R.board)
 ORDER BY board_id desc;
+
+CREATE VIEW replylist AS
+SELECT
+reply_id, parent, sorts, content, date, member_id, nickname, profile_photo, board
+FROM reply AS R
+LEFT JOIN member AS M ON(R.writer = M.member_id)
+ORDER BY parent, reply_id;

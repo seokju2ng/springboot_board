@@ -15,6 +15,10 @@ $(document).ready(function(){
     $('button#write').click($.write);
     $('select#category').change($.reload);
     $('select#list-size').change($.reload);
+    $('table.board tr td:nth-child(2)').click(function (event) {
+        let idx = event.target.id;
+        location.href = "/board/"+idx;
+    })
 });
 
 $.prev = function (startPage) {
@@ -27,7 +31,7 @@ $.next = function (endPage) {
 
 $.write = function () {
     if($('div.login button').attr('id') === 'login') {
-        $.login(true);
+        $.login('/board/write');
     } else {
         location.href = "/board/write";
     }

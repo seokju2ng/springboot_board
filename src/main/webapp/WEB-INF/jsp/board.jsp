@@ -111,7 +111,7 @@
             <c:forEach var="board" items="${boards}">
                 <tr>
                     <td>${board.boardId}</td>
-                    <td>
+                    <td id="${board.boardId}">
                         <c:if test="${board.category != '없음'}">
                             <span class="category">[${board.category}]</span>
                         </c:if>
@@ -124,7 +124,7 @@
                         <c:if test="${board.profile != null}">
                             <!-- 사진 조그맣게 넣을 공간 -->
                         </c:if>
-                        ${board.writer}
+                        ${board.writerNickname}
                     </td>
                     <td>${board.date}</td>
                     <td>${board.views}</td>

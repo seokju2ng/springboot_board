@@ -1,6 +1,8 @@
 package com.board.demo.util;
 
 import com.board.demo.vo.Boardlist;
+import com.board.demo.vo.Article;
+import com.board.demo.vo.Replylist;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,7 +16,7 @@ public class Conversion {
     private static final int BEGIN = 0;
     private static final int MAX_LENGTH = 30;
 
-    public static void convertDateFormat(List<Boardlist> boards) {
+    public static void convertDateFormatForBoard(List<Boardlist> boards) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String today = sdf.format(new Date());
 
@@ -39,5 +41,16 @@ public class Conversion {
 
     public static int calcStartPage(int page) {
         return ((page - 1) / 10) * 10 + 1;
+    }
+
+    public static void convertContent(Article article) {
+        System.out.println("convertContent()");
+        String oldContent = article.getContent();
+        article.setContent(oldContent.replace("\n", "<br>"));
+    }
+
+    public static void convertDateFormatForArticle(Article article) {
+        System.out.println("convertDateFormatForArticle()");
+        article.setDate(article.getDate().substring(DATE_START, TIME_END));
     }
 }

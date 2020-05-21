@@ -1,0 +1,132 @@
+body {
+    background: #ffdcdc;
+    margin: 0;
+}
+.swal2-input {
+    text-align: center;
+}
+.wrap {
+    margin-top: 60px;
+}
+.article_wrap {
+    padding: 15px;
+    margin: 0 35px;
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
+.article_content_box {
+}
+.article_header {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ffdcdc;
+}
+.article_title {
+    font-size: 20pt;
+    margin-bottom: 12px;
+}
+.writer_info {
+    height: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.writer_info > div > div{
+    display: inline-block;
+}
+.writer_profile_box {
+    margin-right: 10px;
+}
+.writer_profile {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+.writer_nickname > span {
+    font-size: 15pt;
+}
+.write_time > span {
+    font-size: 10pt;
+}
+div.views {
+    text-align: right;
+}
+.article_viewer {
+    margin-bottom: 100px;
+}
+.reply_box > div {
+    display: inline-block;
+}
+.like_article {
+    margin-right: 30px;
+}
+.heart {
+    color: #ff0066;
+}
+.heart:hover {
+    cursor: pointer;
+}
+.comment_box {
+    font-size: 11pt;
+}
+.comment_list {
+    list-style: none;
+    padding-left: 0;
+}
+.comment_area {
+    border-top: 1px solid #ffdcdc;
+}
+.comment_area > img {
+    position: absolute;
+}
+.comment_content {
+    padding-left: 50px;
+}
+.comment_item_reply {
+    padding-left: 50px;
+}
+.comment_nickname {
+    font-weight: bold;
+}
+.comment_text_box {
+    margin-bottom: 5px;
+}
+.comment_info_box {
+    font-size: 10pt;
+}
+.comment_info_box:hover {
+    cursor: pointer;
+}
+.comment_info_date {
+    margin-right: 10px;
+    color: gray;
+}
+.comment_writer {
+    padding: 15px;
+    margin: 15px auto;
+    border: 2px solid #ffdcdc;
+    border-radius: 10px;
+    background-color: white;
+}
+.comment_area {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.comment_writer_name {
+    font-size: 10pt;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.comment_write_input {
+    font-size: 10pt;
+    width: 100%;
+    border: none;
+    overflow: hidden;
+    height: 17px;
+    resize: none;
+    outline: none;
+    margin-bottom: 10px;
+}
+.comment_writer_button {
+    text-align: right;
+}

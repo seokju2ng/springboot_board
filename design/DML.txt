@@ -30,3 +30,14 @@ LEFT JOIN category AS C ON(B.category = C.category_id)
 LEFT JOIN (select board, count(*) AS rp from reply group by board) AS R
 ON(B.board_id = R.board)
 ORDER BY board_id desc;
+
+SELECT
+reply_id, parent, sorts, content, date, member_id, nickname, profile_photo, board
+FROM reply AS R
+LEFT JOIN member AS M ON(R.writer = M.member_id)
+ORDER BY parent, reply_id;
+
+
+SELECT * FROM reply ORDER BY parent, reply_id;
+
+UPDATE reply SET parent = reply_id WHERE parent=0;

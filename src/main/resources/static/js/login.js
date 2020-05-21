@@ -131,7 +131,8 @@ $.logout = function () {
                         showConfirmButton: false,
                         timer: 1500
                     }).then(function (){
-                        location.replace("/board");
+                        // location.replace("/board");
+                        location.reload(true);
                     });
                     break;
                 case INVALID_APPROACH:
@@ -142,7 +143,7 @@ $.logout = function () {
     });
 }
 
-$.login = async function (write) {
+$.login = async function (where) {
     let join = '<span class="join" onclick="$.btnClick(this)">회원가입</span>';
     let findPwd = '<span class="find-pwd" onclick="$.btnClick(this)">비밀번호 찾기</span>'
 
@@ -169,8 +170,8 @@ $.login = async function (write) {
                 case SUCCESS:
                     Swal.fire('로그인 성공', data.nick + '님 안녕하세요.', 'success')
                         .then(function(){
-                            if (write) {
-                                location.href = "/board/write";
+                            if (where !== undefined) {
+                                location.href = where;
                             }
                             $('button#login').text("로그아웃");
                             $('button#login').attr('id', 'logout');

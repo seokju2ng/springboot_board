@@ -11,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Boardlist implements Serializable {
+public class Boardlist implements Serializable, Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +24,17 @@ public class Boardlist implements Serializable {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "content")
+    private String content;
+
     @Column(name = "profile_photo")
     private String profile;
 
-    @Column(name = "writer")
-    private String writer;
+    @Column(name = "writer_id")
+    private String writerId;
+
+    @Column(name = "writer_nick")
+    private String writerNickname;
 
     @Column(name = "date")
     private String date;

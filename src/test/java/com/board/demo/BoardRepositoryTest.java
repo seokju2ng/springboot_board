@@ -2,8 +2,13 @@ package com.board.demo;
 
 import com.board.demo.repository.BoardRepository;
 import com.board.demo.repository.BoardlistRepository;
+import com.board.demo.repository.ReplyRepository;
+import com.board.demo.repository.ReplylistRepository;
+import com.board.demo.util.Conversion;
 import com.board.demo.vo.Board;
 import com.board.demo.vo.Boardlist;
+import com.board.demo.vo.Reply;
+import com.board.demo.vo.Replylist;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +31,9 @@ public class BoardRepositoryTest {
 
     @Autowired
     private BoardlistRepository boardlistRepository;
+
+    @Autowired
+    private ReplylistRepository replylistRepository;
 
     @Test
     @Transactional
@@ -71,5 +79,18 @@ public class BoardRepositoryTest {
         PageRequest pageRequest = PageRequest.of(page, size);
         List<Boardlist> boards = boardlistRepository.findAllByCategory(category, pageRequest).getContent();
         boards.forEach(board -> log.info(board.toString()));
+    }
+
+    @Test
+    public void viewArticle() {
+        long board_id = 6L;
+        Optional<Boardlist> board = boardlistRepository.findById(board_id);
+        if (board.isPresent()) {
+            log.info(board.get().toString());
+            List<Replylist> replies = replylistRepository.findAllByBoardId(board_id);
+            replies.forEach(reply -> log.info(reply.toString()));
+        } else {
+            log.info("Board id = '" + board_id + "' is not exist.");
+        }
     }
 }

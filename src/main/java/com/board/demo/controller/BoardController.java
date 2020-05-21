@@ -2,19 +2,19 @@ package com.board.demo.controller;
 
 import com.board.demo.service.BoardService;
 import com.board.demo.service.CategoryService;
+import com.board.demo.service.ReplyService;
 import com.board.demo.util.Conversion;
 import com.board.demo.vo.Boardlist;
 import com.board.demo.vo.Category;
 import com.board.demo.vo.Member;
+import com.board.demo.vo.Replylist;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.board.demo.util.Constants.*;
 
@@ -32,12 +33,16 @@ public class BoardController {
     private final String DEFAULT_CATEGORY = "전체보기";
     private final String DEFAULT_PAGE = "1";
     private final String DEFAULT_LIST_SIZE = "10";
+    private final int NOT_EXIST = 0;
 
     @Autowired
     private BoardService boardService;
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ReplyService replyService;
 
     @GetMapping
     public ModelAndView showBoard(
@@ -46,11 +51,18 @@ public class BoardController {
             @RequestParam(defaultValue = DEFAULT_LIST_SIZE, required = false) Integer size) {
         ModelAndView mav = new ModelAndView();
         Page<Boardlist> boardlistPage = boardService.getList(category, page - 1, size);
+        List<Boardlist> boards = boardlistPage.getContent();
+        log.info("boards.size() : "+boards.size());
+
+        if (boards.size() == NOT_EXIST) {
+            return showErrorPage();
+        }
+
         List<Category> categories = categoryService.getList();
         int totalPage = boardlistPage.getTotalPages();
         int startPage = Conversion.calcStartPage(page);
-        List<Boardlist> boards = boardlistPage.getContent();
-        Conversion.convertDateFormat(boards);
+
+        Conversion.convertDateFormatForBoard(boards);
         Conversion.convertTitleLength(boards);
 
         mav.setViewName("board");
@@ -102,4 +114,31 @@ public class BoardController {
         response.setContentType("application/json; charset=utf-8");
         response.getWriter().print(res);
     }
+
+    @GetMapping("/{idx}")
+    public ModelAndView viewPost(@PathVariable("idx") int boardId) {
+        if (!boardService.addViews(boardId)) {
+            return showErrorPage();
+        }
+
+        Boardlist article = boardService.getPostById(boardId);
+        if (Objects.isNull(article)) {
+            return showErrorPage();
+        }
+        List<Replylist> replies = replyService.getRepliesByBoardId(boardId);
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("view_article");
+        mav.addObject("article", article);
+        mav.addObject("replies", replies);
+        return mav;
+    }
+
+    private ModelAndView showErrorPage() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("err_404");
+        mav.addObject("err_msg", "요청하신 페이지를 찾을 수 없습니다.");
+        return mav;
+    }
+
 }
