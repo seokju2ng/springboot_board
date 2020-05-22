@@ -54,6 +54,7 @@ div.views {
     text-align: right;
 }
 .article_viewer {
+    padding: 0 10px;
     margin-bottom: 100px;
 }
 .reply_box > div {
@@ -95,8 +96,17 @@ div.views {
 }
 .comment_info_box {
     font-size: 10pt;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
-.comment_info_button:hover {
+.comment_info_delete {
+    text-align: right;
+    padding-right: 15px;
+}
+.comment_delete_button {
+    color: #888888;
+}
+.comment_delete_button:hover, .comment_info_button:hover {
     cursor: pointer;
 }
 .comment_info_date {
@@ -144,4 +154,7 @@ div.views {
 }
 .article_bottom_right {
     text-align: right;
+}
+.delete_comment {
+    color: #888888;
 }

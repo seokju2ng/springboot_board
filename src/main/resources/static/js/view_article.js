@@ -9,13 +9,14 @@ $(document).ready(function () {
        let recommentForm = ``
            + `<div class="comment_writer recomment_form">`
            + ` <div class="recomment_writer_name">${nickname}</div>`
-           + ` <textarea class="recomment_write_input" placeholder="${to}님에게 답글" onkeydown="resize(this)"></textarea>`
+           + ` <textarea class="recomment_write_input" placeholder="${to}님께 답글쓰기" onkeydown="resize(this)"></textarea>`
            + ` <div class="comment_writer_button">`
            + `  <button class="button2" onclick="removeForm()">취소</button>`
            + `  <button class="button2" onclick="writeReply(${parent}, '${to}')">등록</button>`
            + ` </div>`
            + `</div>`;
        $('#comment_area'+from).append(recommentForm);
+       $('.recomment_write_input').focus();
    })
 });
 
@@ -53,31 +54,33 @@ function writeReply(parent, to) {
     if (parent !== 0) {
         content = '<b>'+to+'</b> ' + $('.recomment_write_input').val();
     }
-    console.log(boardId, parent, content);
+    // console.log(boardId, parent, content);
+    let objArray = [
+        { name: 'content', value: content },
+        { name: 'parent', value: parent},
+        { name: 'boardId', value: boardId },
+    ];
+    $.sendPost('/board/write/reply', objArray);
+}
 
-    let form = document.createElement('form');
-    form.setAttribute('method', 'post');
-    form.setAttribute('action', '/board/write/reply');
-
-
-    let param1 = document.createElement('input');
-    param1.setAttribute('type', 'hidden');
-    param1.setAttribute('name', 'boardId');
-    param1.setAttribute('value', boardId);
-    form.appendChild(param1);
-
-    let param2 = document.createElement('input');
-    param2.setAttribute('type', 'hidden');
-    param2.setAttribute('name', 'parent');
-    param2.setAttribute('value', parent);
-    form.appendChild(param2);
-
-    let param3 = document.createElement('input');
-    param3.setAttribute('type', 'hidden');
-    param3.setAttribute('name', 'content');
-    param3.setAttribute('value', content);
-    form.appendChild(param3);
-    document.body.appendChild(form);
-    form.submit();
-
+function deleteReply(parent, replyId) {
+    let boardId = $('.article_wrap').attr('id');
+    Swal.fire({
+        title: '댓글 삭제',
+        text: '정말로 삭제하시겠습니까?',
+        icon: 'question',
+        confirmButtonText: "삭제",
+        confirmButtonColor: '#ff7799',
+        showCancelButton: true,
+        cancelButtonText: '취소'
+    }).then(function (data) {
+        if (data.value) {
+            let objArray = [
+                { name: 'replyId', value: replyId },
+                { name: 'parent', value: parent},
+                { name: 'boardId', value: boardId },
+            ];
+            $.sendPost('/board/delete/reply', objArray);
+        }
+    })
 }

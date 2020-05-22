@@ -33,7 +33,6 @@ $.join = async function () {
                 let inputPwd = await $.joinPwd();
                 let inputEmail = await $.joinEmail();
                 let inputNick = await $.swalInput('text', '회원가입', '닉네임을 입력하세요', '회원가입');
-                console.log({inputId:inputId, inputPwd:inputPwd, inputEmail:inputEmail, inputNick: inputNick});
                 $.ajax({
                     url: '/member/join',
                     type: 'POST',
@@ -144,8 +143,8 @@ $.logout = function () {
 }
 
 $.login = async function (where) {
-    let join = '<span class="join" onclick="$.btnClick(this)">회원가입</span>';
-    let findPwd = '<span class="find-pwd" onclick="$.btnClick(this)">비밀번호 찾기</span>'
+    let join = '<span id="join" class="popup_footer" onclick="$.btnClick(this)">회원가입</span>';
+    let findPwd = '<span id="find-pwd" class="popup_footer" onclick="$.btnClick(this)">비밀번호 찾기</span>'
 
     let id = await $.swalInput('text', '로그인', '아이디를 입력하세요', '다음 &rarr;', join);
     if (id === undefined) return;

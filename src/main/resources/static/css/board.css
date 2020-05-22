@@ -50,14 +50,12 @@ div.top-bar > div > select.swal2-select {
     text-align: center;
 }
 
-.join,
-.find-pwd {
+.popup_footer {
     color: #ff7799;
     font-weight: bold;
 }
 
-.join:hover,
-.find-pwd:hover {
+.popup_footer:hover {
     color: #ff6688;
     cursor: pointer;
     text-decoration: underline;

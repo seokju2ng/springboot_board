@@ -13,10 +13,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ReplyServiceImpl implements ReplyService {
     private final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private final int JUST_ONE_REPLY = 1;
     @Autowired
     private ReplylistRepository replylistRepository;
 
@@ -55,5 +57,28 @@ public class ReplyServiceImpl implements ReplyService {
             reply = replyRepository.save(reply);
         }
         return true;
+    }
+
+    @Override
+    public boolean deleteReply(long replyId, long parent, Member member) {
+        if (Objects.isNull(member)) {
+            return false;
+        }
+        Optional<Reply> resReply = replyRepository.findByReplyIdAndParentAndWriter(replyId, parent, member.getMemberId());
+
+        if (!resReply.isPresent()) {
+            return false;
+        }
+        List<Reply> replies = replyRepository.findAllByParent(parent);
+        if ( (replies.size() > JUST_ONE_REPLY) &&
+                (parent == replyId) ) {
+            Reply reply = resReply.get();
+            reply.setContent("NULL");
+            replyRepository.save(reply);
+            return true;
+        }
+        replyRepository.deleteById(replyId);
+
+        return !replyRepository.findById(replyId).isPresent();
     }
 }

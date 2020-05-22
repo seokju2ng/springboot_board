@@ -9,4 +9,6 @@ public interface ReplyService {
     List<Replylist> getRepliesByBoardId(long boardId);
 
     boolean writeReply(long boardId, long parent, String content, Member member);
+
+    boolean deleteReply(long replyId, long parent, Member member);
 }

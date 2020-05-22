@@ -82,20 +82,34 @@
                                             <span class="comment_nickname">${reply.nickname}</span>
                                         </div>
                                         <div class="comment_text_box">
-                                            <span class="text_comment">${reply.content}</span>
+                                            <c:choose>
+                                                <c:when test="${reply.content == 'NULL'}">
+                                                    <span class="text_comment delete_comment">삭제된 댓글입니다.</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="text_comment">${reply.content}</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                         <div class="comment_info_box">
-                                            <span class="comment_info_date">${reply.date}</span>
-                                            <c:if test="${loginMember != null}">
-                                                <c:choose>
-                                                    <c:when test="${reply.parent != reply.replyId}">
-                                                        <c:set var="parent" value="${reply.parent}"></c:set>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <c:set var="parent" value="${reply.replyId}"></c:set>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            <span id="${parent} ${reply.replyId} ${reply.nickname}" class="comment_info_button">답글쓰기</span>
+                                            <div>
+                                                <span class="comment_info_date">${reply.date}</span>
+                                                <c:if test="${loginMember != null}">
+                                                    <c:choose>
+                                                        <c:when test="${reply.parent != reply.replyId}">
+                                                            <c:set var="parent" value="${reply.parent}"></c:set>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <c:set var="parent" value="${reply.replyId}"></c:set>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <span id="${parent} ${reply.replyId} ${reply.nickname}" class="comment_info_button">답글쓰기</span>
+                                                </c:if>
+                                            </div>
+                                            <c:if test="${loginMember != null and loginMember.memberId == reply.memberId}">
+                                            <div class="comment_info_delete">
+                                                <span class="comment_delete_button" onclick="deleteReply(${reply.parent}, ${reply.replyId})">삭제</span>
+                                            </div>
                                             </c:if>
                                         </div>
                                     </div>

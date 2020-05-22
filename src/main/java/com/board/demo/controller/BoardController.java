@@ -151,6 +151,23 @@ public class BoardController {
         return mav;
     }
 
+    @PostMapping("/delete/reply")
+    public ModelAndView deleteReply(@RequestParam int replyId,
+                                    @RequestParam int parent,
+                                    @RequestParam int boardId,
+                                    HttpServletRequest request) {
+        Member member = (Member)request.getSession().getAttribute("loginMember");
+        boolean result = replyService.deleteReply(replyId, parent, member);
+
+        if (!result) {
+            return showErrorPage();
+        }
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("redirect:/board/"+boardId);
+        return mav;
+    }
+
+
     private ModelAndView showErrorPage() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("err_404");
