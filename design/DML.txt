@@ -19,7 +19,8 @@ INSERT INTO reply VALUES(default, 1, 1, "ㅋㅋㅋㅋ앜ㅋㅋㅋㅋ", default, 6, 3);
 
 INSERT INTO reply VALUES(default, default, default, "나도 테스트", default, 3, 2);
 INSERT INTO reply VALUES(default, 7, default, "나도 테스트1", default, 3, 3);
-INSERT INTO reply VALUES(default, 7, 1, "나도 테스트2", default, 3, 2);
+INSERT INTO reply VALUES(default, 0, 1, "나도 테스트2", default, 3, 2);
+INSERT INTO reply VALUES(default, 0, 0, "형 지나가다 뒤통수 조심하세요.", default, 16, 21);
 
 
 SELECT board_id, category_name AS category, title, 
@@ -45,3 +46,12 @@ UPDATE reply SET parent = reply_id WHERE parent=0;
 SELECT * FROM (SELECT * FROM board list WHERE board_id < 16 ORDER BY board_id desc LIMIT 1) A
 UNION
 SELECT * FROM (SELECT * FROM board list WHERE board_id > 16 ORDER BY board_id asc LIMIT 1) B;
+
+
+
+CREATE TRIGGER insertReplyTrigger
+AFTER INSERT 
+ON reply 
+FOR EACH ROW
+UPDATE reply SET NEW.parent = NEW.reply_id 
+WHERE NEW.parent = 0;

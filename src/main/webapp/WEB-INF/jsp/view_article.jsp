@@ -25,7 +25,7 @@
             </c:otherwise>
         </c:choose>
     </div>
-    <div class="article_wrap">
+    <div id="${article.boardId}" class="article_wrap">
         <div class="article_content_box">
             <div class="article_header">
                 <div class="article_title">
@@ -67,7 +67,7 @@
                     <ul class="comment_list">
                         <c:forEach var="reply" items="${replies}">
                             <li class="comment_item <c:if test="${reply.parent != reply.replyId}">comment_item_reply</c:if>">
-                                <div class="comment_area">
+                                <div id="comment_area${reply.replyId}" class="comment_area">
                                     <c:choose>
                                         <c:when test="${reply.profilePhoto == null}">
                                             <c:set var="profilePhoto" value="null_profile.png"></c:set>
@@ -76,7 +76,7 @@
                                             <c:set var="profilePhoto" value="${reply.profilePhoto}"></c:set>
                                         </c:otherwise>
                                     </c:choose>
-                                    <img src="/static/img/${profilePhoto}" class="writer_profile"></img>
+                                    <img src="/static/img/${profilePhoto}" class="writer_profile">
                                     <div class="comment_content">
                                         <div class="comment_nick_box">
                                             <span class="comment_nickname">${reply.nickname}</span>
@@ -87,7 +87,15 @@
                                         <div class="comment_info_box">
                                             <span class="comment_info_date">${reply.date}</span>
                                             <c:if test="${loginMember != null}">
-                                            <span class="commente_info_button">답글쓰기</span>
+                                                <c:choose>
+                                                    <c:when test="${reply.parent != reply.replyId}">
+                                                        <c:set var="parent" value="${reply.parent}"></c:set>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:set var="parent" value="${reply.replyId}"></c:set>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            <span id="${parent} ${reply.replyId} ${reply.nickname}" class="comment_info_button">답글쓰기</span>
                                             </c:if>
                                         </div>
                                     </div>
@@ -98,10 +106,11 @@
                 </div>
                 <c:if test="${loginMember != null}">
                 <div class="comment_writer">
+                    <form name="commentForm" method="post" onsubmit="return false;">
                     <div class="comment_writer_name">${loginMember.nickname}</div>
                     <textarea class="comment_write_input" placeholder="댓글을 남겨보세요" onkeydown="resize(this)"></textarea>
                     <div class="comment_writer_button">
-                        <button class="button2">등록</button>
+                        <button class="button2" onclick="writeReply(0)">등록</button>
                     </div>
                 </div>
                 </c:if>

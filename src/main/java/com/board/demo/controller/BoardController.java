@@ -50,7 +50,7 @@ public class BoardController {
         ModelAndView mav = new ModelAndView();
         Page<Boardlist> boardlistPage = boardService.getList(category, page - 1, size);
         List<Boardlist> boards = boardlistPage.getContent();
-        log.info("boards.size() : "+boards.size());
+//        log.info("boards.size() : "+boards.size());
 
         if (boards.size() == NOT_EXIST) {
             return showErrorPage();
@@ -114,7 +114,7 @@ public class BoardController {
     }
 
     @GetMapping("/{idx}")
-    public ModelAndView viewPost(@PathVariable("idx") int boardId) {
+    public ModelAndView showArticle(@PathVariable("idx") int boardId) {
         if (!boardService.addViews(boardId)) {
             return showErrorPage();
         }
@@ -132,6 +132,22 @@ public class BoardController {
         mav.addObject("replies", replies);
         mav.addObject("prev_article", currentArticle.getPrev());
         mav.addObject("next_article", currentArticle.getNext());
+        return mav;
+    }
+
+    @PostMapping("/write/reply")
+    public ModelAndView writeReply(@RequestParam int boardId,
+                           @RequestParam int parent,
+                           @RequestParam String content,
+                           HttpServletRequest request) {
+        Member member = (Member)request.getSession().getAttribute("loginMember");
+        boolean result = replyService.writeReply(boardId, parent, content, member);
+
+        if (!result) {
+            return showErrorPage();
+        }
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("redirect:/board/"+boardId);
         return mav;
     }
 

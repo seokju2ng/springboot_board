@@ -1,8 +1,11 @@
 package com.board.demo.vo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +14,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
+@DynamicInsert
+@DynamicUpdate
 public class Reply implements Serializable {
 
     @Id
@@ -21,13 +27,13 @@ public class Reply implements Serializable {
     @Column(name = "parent", nullable = false)
     private Long parent;
 
-    @Column(name = "sorts", nullable = false)
-    private Long sorts;
+//    @Column(name = "sorts", nullable = false)
+//    private Long sorts;
 
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date")
     private String date;
 
     @Column(name = "board", nullable = false)
