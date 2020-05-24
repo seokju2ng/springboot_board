@@ -22,7 +22,7 @@ public class Board implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id", nullable = false)
-    private Long boardId;
+    private long boardId;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -40,8 +40,8 @@ public class Board implements Serializable {
     private long views;
 
     @Column(name = "writer", nullable = false)
-    private Long writer;
+    private long writer;
 
     @Column(name = "category", nullable = false)
-    private Long category;
+    private long category;
 }

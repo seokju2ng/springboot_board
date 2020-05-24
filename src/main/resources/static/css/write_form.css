@@ -17,6 +17,7 @@ input.swal2-input {
 textarea.swal2-textarea {
     background: white;
     height: 270px;
+    resize: none;
 }
 
 select.swal2-select {

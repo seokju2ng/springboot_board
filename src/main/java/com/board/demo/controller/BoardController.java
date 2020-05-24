@@ -80,12 +80,10 @@ public class BoardController {
         Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 
         if (Objects.isNull(loginMember)) {
-            mav.setViewName("redirect:/board");
-        } else {
-            List<Category> list = categoryService.getList();
-            mav.setViewName("write_form");
-            mav.addObject("categories", list);
+            return showErrorPage();
         }
+        mav.setViewName("write_form");
+        mav.addObject("categories", categoryService.getList());
         return mav;
     }
 
@@ -100,13 +98,11 @@ public class BoardController {
 
         if (Objects.isNull(loginMember)) {
             res.put(RESULT, INVALID_APPROACH);
+        }
+        else if (boardService.write(loginMember.getMemberId(), title, content, category)) {
+            res.put(RESULT, SUCCESS);
         } else {
-            boolean result = boardService.write(loginMember.getMemberId(), title, content, category);
-            if (result) {
-                res.put(RESULT, SUCCESS);
-            } else {
-                res.put(RESULT, FAIL);
-            }
+            res.put(RESULT, FAIL);
         }
 
         response.setContentType("application/json; charset=utf-8");
@@ -119,7 +115,7 @@ public class BoardController {
             return showErrorPage();
         }
 
-        Boardlist article = boardService.getPostById(boardId);
+        Boardlist article = boardService.getPostByIdForViewArticle(boardId);
         if (Objects.isNull(article)) {
             return showErrorPage();
         }
@@ -165,6 +161,52 @@ public class BoardController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/board/"+boardId);
         return mav;
+    }
+
+    @GetMapping("/modify/{idx}")
+    public ModelAndView showModifyForm(@PathVariable("idx") long boardId,
+                                       HttpServletRequest request) {
+        Boardlist article = boardService.getPostById(boardId);
+        Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+
+        if ( Objects.isNull(article) ||
+             Objects.isNull(loginMember) ||
+            (loginMember.getMemberId() != article.getWriterId()) ) {
+            return showErrorPage();
+        }
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("modify_form");
+        mav.addObject("article", article);
+        mav.addObject("categories", categoryService.getList());
+        return mav;
+    }
+
+    @PostMapping("/modify")
+    public void modify(@RequestParam long boardId,
+                       @RequestParam String title,
+                       @RequestParam String content,
+                       @RequestParam int category,
+                       HttpServletRequest request,
+                       HttpServletResponse response) throws IOException {
+        Board article = boardService.getBoardById(boardId);
+        Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+        JSONObject res = new JSONObject();
+
+        if ( Objects.isNull(article) ||
+             Objects.isNull(loginMember) ||
+            (loginMember.getMemberId() != article.getWriter()) ) {
+            res.put(RESULT, INVALID_APPROACH);
+        }
+        else if (boardService.modify(article, title, content, category)) {
+            res.put(RESULT, SUCCESS);
+        }
+        else {
+            res.put(RESULT, FAIL);
+        }
+
+        response.setContentType("application/json; charset=utf-8");
+        response.getWriter().print(res);
     }
 
 

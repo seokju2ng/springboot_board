@@ -1,22 +1,7 @@
 $(document).ready(function () {
     $('#btn-submit').click($.write);
-    $('#btn-back').click(function () {
-        Swal.fire({
-            title: '취소',
-            text: '정말로 취소하시겠습니까?',
-            icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: '아니오',
-            confirmButtonText: '예',
-            confirmButtonColor: '#ff7799'
-        }).then(result => {
-            if (result.value) {
-                location.href = "/board";
-            }
-        })
-    });
+    $('#btn-back').swalClickCancel("/board");
 });
-
 
 $.write = function () {
     Swal.fire({
@@ -56,13 +41,7 @@ $.write = function () {
                             });
                         break;
                     case INVALID_APPROACH :
-                            Swal.fire({
-                                title: '접근 에러',
-                                text: '잘못된 접근입니다.',
-                                icon: 'error'
-                            }).then(() => {
-                                location.href = "/board";
-                    });
+                        location.replace('/board');
                         break;
                     }
                 }

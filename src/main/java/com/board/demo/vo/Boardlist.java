@@ -16,7 +16,7 @@ public class Boardlist implements Serializable, Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
-    private Long boardId;
+    private long boardId;
 
     @Column(name = "category")
     private String category;
@@ -31,7 +31,7 @@ public class Boardlist implements Serializable, Article {
     private String profile;
 
     @Column(name = "writer_id")
-    private String writerId;
+    private long writerId;
 
     @Column(name = "writer_nick")
     private String writerNickname;

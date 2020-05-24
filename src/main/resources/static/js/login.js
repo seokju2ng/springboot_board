@@ -169,11 +169,11 @@ $.login = async function (where) {
                 case SUCCESS:
                     Swal.fire('로그인 성공', data.nick + '님 안녕하세요.', 'success')
                         .then(function(){
-                            if (where !== undefined) {
-                                location.href = where;
-                            }
-                            $('button#login').text("로그아웃");
-                            $('button#login').attr('id', 'logout');
+                            // if (where !== undefined) {
+                            location.reload(true);
+                            // }
+                            // $('button#login').text("로그아웃");
+                            // $('button#login').attr('id', 'logout');
                         });
                     break;
                 default :

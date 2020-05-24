@@ -1,30 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>${title}</title>
-    <link rel="stylesheet" href="/static/css/common.css"/>
     <link rel="stylesheet" href="/static/css/view_article.css"/>
-    <script src="http://code.jquery.com/jquery-3.5.0.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="/static/js/common.js"></script>
-    <script src="/static/js/login.js"></script>
-    <script src="/static/js/view_article.js"></script>
 </head>
 <body>
 <div class="wrap">
-    <div class="login">
-        <c:choose>
-            <c:when test="${loginMember == null}">
-                <button id="login" class="button1" onclick="$.btnClick1(this)">로그인</button>
-            </c:when>
-            <c:otherwise>
-                <button id="logout" class="button1" onclick="$.btnClick1(this)">로그아웃</button>
-            </c:otherwise>
-        </c:choose>
-    </div>
+    <jsp:include page="topbar.jsp"/>
     <div id="${article.boardId}" class="article_wrap">
         <div class="article_content_box">
             <div class="article_header">
@@ -132,6 +117,9 @@
             <div class="article_bottom_bar">
                 <div class="article_bottom_left">
                     <button class="button1" onclick="viewBoard()">목록</button>
+                    <c:if test="${article.writerId == loginMember.memberId}">
+                        <button class="button1" onclick="modifyArticle()">수정</button>
+                    </c:if>
                 </div>
                 <div class="article_bottom_right">
                     <c:if test="${prev_article != 0}">
@@ -145,5 +133,6 @@
         </div>
     </div>
 </div>
+<script src="/static/js/view_article.js"></script>
 </body>
 </html>

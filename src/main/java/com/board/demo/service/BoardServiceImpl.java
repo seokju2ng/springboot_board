@@ -21,6 +21,7 @@ public class BoardServiceImpl implements BoardService {
     private final int PREV_OR_NEXT = 0;
     private final int PREV_ARTICLE = 0;
     private final int NEXT_ARTICLE = 1;
+
     @Autowired
     private BoardRepository boardRepository;
     @Autowired
@@ -29,7 +30,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Page<Boardlist> getList(String category, int page, int size) {
-        Page<Boardlist> boardlistPage = null;
+        Page<Boardlist> boardlistPage;
         PageRequest pageRequest = PageRequest.of(page, size);
         if (ALL_POSTS.equals(category)) {
             boardlistPage = boardlistRepository.findAll(pageRequest);
@@ -47,20 +48,33 @@ public class BoardServiceImpl implements BoardService {
                 .content(content)
                 .category(category)
                 .build();
-        board = boardRepository.save(board);
-        return !Objects.isNull(board);
+        return !Objects.isNull(boardRepository.save(board));
+    }
+
+    @Override
+    public boolean modify(Board article, String title, String content, long category) {
+        article.setTitle(title);
+        article.setContent(content);
+        article.setCategory(category);
+        return !Objects.isNull(boardRepository.save(article));
+    }
+
+    @Override
+    public Boardlist getPostByIdForViewArticle(long boardId) {
+        Boardlist board = getPostById(boardId);
+        Conversion.convertContent(board);
+        Conversion.convertDateFormatForArticle(board);
+        return board;
     }
 
     @Override
     public Boardlist getPostById(long boardId) {
-        Optional<Boardlist> opBoard = boardlistRepository.findById(boardId);
-        if (!opBoard.isPresent()) {
-            return null;
-        }
-        Boardlist board = opBoard.get();
-        Conversion.convertContent(board);
-        Conversion.convertDateFormatForArticle(board);
-        return board;
+        return boardlistRepository.findById(boardId).orElse(null);
+    }
+
+    @Override
+    public Board getBoardById(long boardId) {
+        return boardRepository.findById(boardId).orElse(null);
     }
 
     @Override
@@ -79,7 +93,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public CurrentArticle getPrevAndNextArticle(long boardId) {
-        CurrentArticle currentArticle = null;
+        CurrentArticle currentArticle;
         List<Board> boards = boardRepository.findPrevAndNextBoardIdByBoardId(boardId);
         switch (boards.size()) {
             case 0:
@@ -91,11 +105,11 @@ public class BoardServiceImpl implements BoardService {
                     currentArticle = CurrentArticle.builder()
                             .next(prevOrNext)
                             .build();
-                } else {
-                    currentArticle = CurrentArticle.builder()
-                            .prev(prevOrNext)
-                            .build();
+                    break;
                 }
+                currentArticle = CurrentArticle.builder()
+                        .prev(prevOrNext)
+                        .build();
                 break;
             case 2:
                 currentArticle = CurrentArticle.builder()
@@ -103,6 +117,7 @@ public class BoardServiceImpl implements BoardService {
                         .next(boards.get(NEXT_ARTICLE).getBoardId())
                         .build();
                 break;
+            default: currentArticle = null; break;
         }
         return currentArticle;
     }

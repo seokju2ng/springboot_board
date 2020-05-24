@@ -4,33 +4,33 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>석주잉 게시판 - 글쓰기</title>
+    <title>석주잉 게시판 - 수정하기</title>
     <link rel="stylesheet" href="/static/css/write_form.css"/>
 </head>
 <body>
 <div class="wrap">
     <jsp:include page="topbar.jsp"/>
-    <div class="form">
-        <form name="write" onsubmit="return false;">
+    <div id="${article.boardId}" class="form">
+        <form name="modify" onsubmit="return false;">
             <span class="subtitle">말머리</span>
             <select name="category" class="swal2-select">
                 <c:forEach var="category" items="${categories}">
                     <c:if test="${category.categoryId != 9999}">
-                    <option value="${category.categoryId}">${category.categoryName}</option>
+                        <option value="${category.categoryId}"<c:if test="${category.categoryName == article.category}">selected</c:if>>${category.categoryName}</option>
                     </c:if>
                 </c:forEach>
             </select>
             <span class="subtitle">제목</span>
-            <input name="title" class="swal2-input" placeholder="title" maxlength="60"/>
+            <input name="title" class="swal2-input" placeholder="title" maxlength="60" value="${article.title}"/>
             <span class="subtitle">내용</span>
-            <textarea name="content" class="swal2-textarea" placeholder="content"></textarea>
+            <textarea name="content" class="swal2-textarea" placeholder="content">${article.content}</textarea>
             <div class="btn-submit">
-                <button id="btn-submit" class="button1">작성</button>
+                <button id="btn-submit" class="button1">수정</button>
                 <button id="btn-back" class="button1">취소</button>
             </div>
         </form>
     </div>
 </div>
-<script src="/static/js/write_form.js"></script>
+<script src="/static/js/modify_form.js"></script>
 </body>
 </html>
