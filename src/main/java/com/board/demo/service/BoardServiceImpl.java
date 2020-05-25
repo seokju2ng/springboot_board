@@ -6,6 +6,7 @@ import com.board.demo.util.Conversion;
 import com.board.demo.util.CurrentArticle;
 import com.board.demo.vo.Board;
 import com.board.demo.vo.Boardlist;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class BoardServiceImpl implements BoardService {
     private final String ALL_POSTS = "전체보기";
     private final int PREV_OR_NEXT = 0;
@@ -58,6 +60,15 @@ public class BoardServiceImpl implements BoardService {
         article.setContent(content);
         article.setCategory(category);
         return !Objects.isNull(boardRepository.save(article));
+    }
+
+    @Override
+    public void deleteArticle(long boardId) {
+        try {
+            boardRepository.deleteById(boardId);
+        } catch (Exception e) {
+            log.error("\n >> " + e.toString() + "\n >> There isn't a board no." + boardId);
+        }
     }
 
     @Override
@@ -118,7 +129,9 @@ public class BoardServiceImpl implements BoardService {
                         .next(boards.get(NEXT_ARTICLE).getBoardId())
                         .build();
                 break;
-            default: currentArticle = null; break;
+            default:
+                currentArticle = null;
+                break;
         }
         return currentArticle;
     }

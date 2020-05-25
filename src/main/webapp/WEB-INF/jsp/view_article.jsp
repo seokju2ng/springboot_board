@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>${title}</title>
+    <title>${article.title}</title>
     <link rel="stylesheet" href="/static/css/view_article.css"/>
 </head>
 <body>
@@ -124,6 +124,7 @@
                     <button class="button1" onclick="viewBoard()">목록</button>
                     <c:if test="${article.writerId == loginMember.memberId}">
                         <button class="button1" onclick="modifyArticle()">수정</button>
+                        <button class="button1" onclick="deleteArticle()">삭제</button>
                     </c:if>
                 </div>
                 <div class="article_bottom_right">

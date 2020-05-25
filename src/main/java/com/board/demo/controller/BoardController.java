@@ -242,6 +242,25 @@ public class BoardController {
         response.getWriter().print(res);
     }
 
+    @PostMapping("/delete")
+    public ModelAndView deleteArticle(@RequestParam long boardId,
+                                      HttpServletRequest request) {
+        Board article = boardService.getBoardById(boardId);
+        Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+
+        if ( Objects.isNull(article) ||
+             Objects.isNull(loginMember) ||
+            (loginMember.getMemberId() != article.getWriter()) ) {
+            return showErrorPage();
+        }
+
+        boardService.deleteArticle(boardId);
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("redirect:/board");
+        return mav;
+    }
+
 
     private ModelAndView showErrorPage() {
         ModelAndView mav = new ModelAndView();

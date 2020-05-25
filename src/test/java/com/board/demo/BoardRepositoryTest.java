@@ -3,7 +3,6 @@ package com.board.demo;
 import com.board.demo.repository.BoardRepository;
 import com.board.demo.repository.BoardlistRepository;
 import com.board.demo.repository.ReplylistRepository;
-import com.board.demo.util.CurrentArticle;
 import com.board.demo.vo.Board;
 import com.board.demo.vo.Boardlist;
 import com.board.demo.vo.Replylist;
@@ -106,6 +105,18 @@ public class BoardRepositoryTest {
             long nextArticle = boards.get(1).getBoardId();
             log.info("prev Article No : " + prevArticle);
             log.info("next Article No : " + nextArticle);
+        }
+    }
+
+    @Test
+
+    public void deleteArticle() {
+        long board_id = 2L;
+        try {
+            boardRepository.deleteById(board_id);
+        } catch (Exception e) {
+            log.error(e.toString());
+            log.error( "There isn't a board no." + board_id);
         }
     }
 }

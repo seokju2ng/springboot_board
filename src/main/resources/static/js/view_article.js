@@ -4,6 +4,7 @@ $(document).ready(function () {
 });
 
 $.clickLikeButton = function () {
+    if ($('.comment_writer').length === 0) return;
     $.postLike(function (data) {
         if (data.result === SUCCESS) {
             if ($('.heart').attr('id') === 'on')
@@ -74,7 +75,6 @@ function writeReply(parent, to) {
     if (parent !== 0) {
         content = '<b>'+to+'</b> ' + $('.recomment_write_input').val();
     }
-    // console.log(boardId, parent, content);
     let objArray = [
         { name: 'content', value: content },
         { name: 'parent', value: parent},
@@ -93,7 +93,7 @@ function deleteReply(parent, replyId) {
         confirmButtonColor: '#ff7799',
         showCancelButton: true,
         cancelButtonText: '취소'
-    }).then(function (data) {
+    }).then(data => {
         if (data.value) {
             let objArray = [
                 { name: 'replyId', value: replyId },
@@ -108,4 +108,22 @@ function deleteReply(parent, replyId) {
 function modifyArticle() {
     let boardId = $('.article_wrap').attr('id');
     location.href = '/board/modify/'+boardId;
+}
+
+function deleteArticle() {
+    let boardId = $('.article_wrap').attr('id');
+    Swal.fire({
+        title: '글 삭제',
+        text: '정말로 삭제하시겠습니까?',
+        icon: 'warning',
+        confirmButtonText: "삭제",
+        confirmButtonColor: '#ff7799',
+        showCancelButton: true,
+        cancelButtonText: '취소'
+    }).then(data => {
+        if (data.value) {
+            let objArray = [{ name: 'boardId', value: boardId }];
+            $.sendPost('/board/delete', objArray);
+        }
+    });
 }
