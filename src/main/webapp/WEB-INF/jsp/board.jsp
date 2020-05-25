@@ -91,7 +91,7 @@
                     <th>작성자</th>
                     <th>작성일</th>
                     <th>조회</th>
-                    <th>♥</th>
+                    <th><img src="/static/img/heart_full.png"></th>
                 </tr>
             <c:forEach var="board" items="${boards}">
                 <tr>

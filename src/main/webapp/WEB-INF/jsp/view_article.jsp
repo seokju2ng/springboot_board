@@ -40,11 +40,16 @@
                 </div>
                 <div class="reply_box">
                     <div class="like_article">
-                        <span class="heart">
-                          ♥
-                        </span>
+                        <c:choose>
+                            <c:when test="${isLike}">
+                                <img id="on" class="heart" src="/static/img/heart_full.png">
+                            </c:when>
+                            <c:otherwise>
+                                <img id="off" class="heart" src="/static/img/heart_empty.png">
+                            </c:otherwise>
+                        </c:choose>
                         <span>좋아요</span>
-                        <span>${article.likes}</span>
+                        <span id="likes">${article.likes}</span>
                     </div>
                     <div class="reply_article">댓글 ${article.replies}</div>
                 </div>
@@ -122,11 +127,11 @@
                     </c:if>
                 </div>
                 <div class="article_bottom_right">
-                    <c:if test="${prev_article != 0}">
-                    <button class="button1" onclick="viewArticle(${prev_article})">이전글</button>
+                    <c:if test="${current.prev != 0}">
+                    <button class="button1" onclick="viewArticle(${current.prev})">이전글</button>
                     </c:if>
-                    <c:if test="${next_article != 0}">
-                    <button class="button1" onclick="viewArticle(${next_article})">다음글</button>
+                    <c:if test="${current.next != 0}">
+                    <button class="button1" onclick="viewArticle(${current.next})">다음글</button>
                     </c:if>
                 </div>
             </div>

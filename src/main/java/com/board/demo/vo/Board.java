@@ -33,9 +33,6 @@ public class Board implements Serializable {
     @Column(name = "date")
     private String date;
 
-    @Column(name = "likes", nullable = false)
-    private long likes;
-
     @Column(name = "views", nullable = false)
     private long views;
 

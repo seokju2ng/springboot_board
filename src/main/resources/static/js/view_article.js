@@ -1,24 +1,55 @@
 $(document).ready(function () {
-   $(".comment_info_button").click(function (event) {
-       $('.recomment_form').remove();
-       let targetId = event.target.id.split(' ');
-       let parent = targetId[0];
-       let from = targetId[1];
-       let to = targetId[2];
-       let nickname = $('.comment_writer_name').text();
-       let recommentForm = ``
-           + `<div class="comment_writer recomment_form">`
-           + ` <div class="recomment_writer_name">${nickname}</div>`
-           + ` <textarea class="recomment_write_input" placeholder="${to}님께 답글쓰기" onkeydown="resize(this)"></textarea>`
-           + ` <div class="comment_writer_button">`
-           + `  <button class="button2" onclick="removeForm()">취소</button>`
-           + `  <button class="button2" onclick="writeReply(${parent}, '${to}')">등록</button>`
-           + ` </div>`
-           + `</div>`;
-       $('#comment_area'+from).append(recommentForm);
-       $('.recomment_write_input').focus();
-   })
+    $(".comment_info_button").click(showReplyWriteForm);
+    $('.like_article').click($.clickLikeButton);
 });
+
+$.clickLikeButton = function () {
+    $.postLike(function (data) {
+        if (data.result === SUCCESS) {
+            if ($('.heart').attr('id') === 'on')
+                heartChange('off', 'empty', -1);
+            else
+                heartChange('on', 'full', 1);
+        }
+    });
+};
+
+function heartChange(id, src, num) {
+    $('.heart').attr('id', id);
+    $('.heart').attr('src', '/static/img/heart_' + src + '.png');
+    $('#likes').text($('#likes').text() * 1 + num);
+}
+
+$.postLike = function (successFunc) {
+    let articleId = $('.article_wrap').attr('id');
+    let flag = $('.heart').attr('id') === 'on' ? 'OFF' : 'ON';
+    $.ajax({
+        url: '/board/like',
+        type: 'POST',
+        data: { boardId: articleId, flag: flag },
+        success: successFunc
+    });
+};
+
+function showReplyWriteForm(event) {
+    $('.recomment_form').remove();
+    let targetId = event.target.id.split(' ');
+    let parent = targetId[0];
+    let from = targetId[1];
+    let to = targetId[2];
+    let nickname = $('.comment_writer_name').text();
+    let recommentForm = ``
+        + `<div class="comment_writer recomment_form">`
+        + ` <div class="recomment_writer_name">${nickname}</div>`
+        + ` <textarea class="recomment_write_input" placeholder="${to}님께 답글쓰기" onkeydown="resize(this)"></textarea>`
+        + ` <div class="comment_writer_button">`
+        + `  <button class="button2" onclick="removeForm()">취소</button>`
+        + `  <button class="button2" onclick="writeReply(${parent}, '${to}')">등록</button>`
+        + ` </div>`
+        + `</div>`;
+    $('#comment_area'+from).append(recommentForm);
+    $('.recomment_write_input').focus();
+}
 
 function removeForm() {
     $('.recomment_form').remove();

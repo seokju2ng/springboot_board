@@ -45,12 +45,14 @@ ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE member_like_board (
+mlb_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 member_id INT UNSIGNED NOT NULL,
 board_id INT UNSIGNED NOT NULL,
 FOREIGN KEY (member_id) REFERENCES member(member_id)
 ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (board_id) REFERENCES board(board_id)
-ON DELETE CASCADE ON UPDATE CASCADE
+ON DELETE CASCADE ON UPDATE CASCADE,
+UNIQUE KEY unique_index(member_id, board_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -61,12 +63,16 @@ ON DELETE CASCADE ON UPDATE CASCADE
 CREATE VIEW boardlist AS
 SELECT 
 board_id, category_name AS category, title, content, B.date, M.member_id AS writer_id, 
-M.nickname AS writer_nick, profile_photo, likes, views, ifnull(rp, 0) AS replies
+M.nickname AS writer_nick, profile_photo, ifnull(MLB.likes, 0) AS likes, views, ifnull(rp, 0) AS replies
 FROM board AS B
-LEFT JOIN member AS M ON(B.writer = M.member_id)
-LEFT JOIN category AS C ON(B.category = C.category_id)
-LEFT JOIN (select board, count(*) AS rp from reply group by board) AS R
+LEFT JOIN member AS M 
+ON(B.writer = M.member_id)
+LEFT JOIN category AS C 
+ON(B.category = C.category_id)
+LEFT JOIN (select board, count(*) AS rp from reply group by board) AS R 
 ON(B.board_id = R.board)
+LEFT JOIN (select board_id, count(*) AS likes from member_like_board group by board_id) AS MLB
+USING(board_id)
 ORDER BY board_id desc;
 
 CREATE VIEW replylist AS
@@ -75,3 +81,9 @@ reply_id, parent, sorts, content, date, member_id, nickname, profile_photo, boar
 FROM reply AS R
 LEFT JOIN member AS M ON(R.writer = M.member_id)
 ORDER BY parent, reply_id;
+
+
+
+
+
+

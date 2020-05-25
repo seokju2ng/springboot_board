@@ -63,11 +63,13 @@ div.views {
 .like_article {
     margin-right: 30px;
 }
-.heart {
-    color: #ff0066;
-}
-.heart:hover {
+.like_article:hover {
     cursor: pointer;
+    text-decoration: underline;
+}
+.heart {
+    width: 20px;
+    height: 17px;
 }
 .comment_box {
     font-size: 11pt;

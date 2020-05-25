@@ -2,6 +2,7 @@ package com.board.demo.controller;
 
 import com.board.demo.service.BoardService;
 import com.board.demo.service.CategoryService;
+import com.board.demo.service.MemberLikeBoardService;
 import com.board.demo.service.ReplyService;
 import com.board.demo.util.Conversion;
 import com.board.demo.util.CurrentArticle;
@@ -31,6 +32,7 @@ public class BoardController {
     private final String DEFAULT_CATEGORY = "전체보기";
     private final String DEFAULT_PAGE = "1";
     private final String DEFAULT_LIST_SIZE = "10";
+    private final String ON = "ON";
     private final int NOT_EXIST = 0;
 
     @Autowired
@@ -42,6 +44,9 @@ public class BoardController {
     @Autowired
     private ReplyService replyService;
 
+    @Autowired
+    private MemberLikeBoardService memberLikeBoardService;
+
     @GetMapping
     public ModelAndView showBoard(
             @RequestParam(defaultValue = DEFAULT_CATEGORY, required = false) String category,
@@ -50,7 +55,6 @@ public class BoardController {
         ModelAndView mav = new ModelAndView();
         Page<Boardlist> boardlistPage = boardService.getList(category, page - 1, size);
         List<Boardlist> boards = boardlistPage.getContent();
-//        log.info("boards.size() : "+boards.size());
 
         if (boards.size() == NOT_EXIST) {
             return showErrorPage();
@@ -110,24 +114,26 @@ public class BoardController {
     }
 
     @GetMapping("/{idx}")
-    public ModelAndView showArticle(@PathVariable("idx") int boardId) {
+    public ModelAndView showArticle(@PathVariable("idx") int boardId,
+                                    HttpServletRequest request) {
         if (!boardService.addViews(boardId)) {
             return showErrorPage();
         }
+        Member member = (Member)request.getSession().getAttribute("loginMember");
+        ModelAndView mav = new ModelAndView();
+        if (!Objects.isNull(member)) {
+            boolean isLike = memberLikeBoardService.isLike(boardId, member.getMemberId());
+            mav.addObject("isLike", isLike);
+        }
 
         Boardlist article = boardService.getPostByIdForViewArticle(boardId);
-        if (Objects.isNull(article)) {
-            return showErrorPage();
-        }
         CurrentArticle currentArticle = boardService.getPrevAndNextArticle(boardId);
         List<Replylist> replies = replyService.getRepliesByBoardId(boardId);
 
-        ModelAndView mav = new ModelAndView();
         mav.setViewName("view_article");
         mav.addObject("article", article);
         mav.addObject("replies", replies);
-        mav.addObject("prev_article", currentArticle.getPrev());
-        mav.addObject("next_article", currentArticle.getNext());
+        mav.addObject("current", currentArticle);
         return mav;
     }
 
@@ -203,6 +209,33 @@ public class BoardController {
         }
         else {
             res.put(RESULT, FAIL);
+        }
+
+        response.setContentType("application/json; charset=utf-8");
+        response.getWriter().print(res);
+    }
+
+    @PostMapping("/like")
+    public void likeOnOff(@RequestParam long boardId,
+                          @RequestParam String flag,
+                          HttpServletRequest request,
+                          HttpServletResponse response) throws IOException {
+        JSONObject res = new JSONObject();
+        Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+
+        if (Objects.isNull(loginMember)) {
+            res.put(RESULT, INVALID_APPROACH);
+        }
+        else if (ON.equals(flag)) { // like on
+            if (memberLikeBoardService.like(loginMember.getMemberId(), boardId)) {
+                res.put(RESULT, SUCCESS);
+            } else {
+                res.put(RESULT, FAIL);
+            }
+        }
+        else {  // like off
+            memberLikeBoardService.dislike(loginMember.getMemberId(), boardId);
+            res.put(RESULT, SUCCESS);
         }
 
         response.setContentType("application/json; charset=utf-8");

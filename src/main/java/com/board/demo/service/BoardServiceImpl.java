@@ -37,6 +37,7 @@ public class BoardServiceImpl implements BoardService {
         } else {
             boardlistPage = boardlistRepository.findAllByCategory(category, pageRequest);
         }
+
         return boardlistPage;
     }
 
