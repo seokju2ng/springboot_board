@@ -1,0 +1,117 @@
+.wrap {
+    margin-top: 50px;
+}
+.profile_info {
+    margin: 15px auto;
+    width: 800px;
+}
+.profile_box {
+    position: absolute;
+}
+.profile_box > img {
+    width: 80px;
+    border-radius: 50%;
+}
+.profile_box > img:hover {
+    cursor: pointer;
+}
+.text {
+    margin-left: 100px;
+}
+.nick_area {
+    padding: 6px 0;
+    font-size: 25pt;
+}
+.desc {
+    padding-bottom: 10px;
+}
+.count {
+    color: #999999;
+}
+.count::before {
+    content: " ▪︎ ";
+}
+.count:first-child::before {
+    content: "";
+}
+.num {
+    color: red;
+}
+.content_area {
+    margin-top: 50px;
+}
+.content_area > div {
+    width : 800px;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+.content_area > div:first-child { margin-top: 0; }
+.content_subtitle {
+    padding: 0 15px;
+}
+.content_subtitle:last-child {
+    border-left: 1px solid #cccccc;
+}
+.not_selected:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.selected {
+    color: #ff0066;
+    font-weight: bold;
+}
+table {
+    border-spacing: 0px;
+    width: 100%;
+}
+table tr th {
+    border-top: 1px solid #ff7799;
+    border-bottom: 1px solid #ff7799;
+    background-color: #fffafa;
+    height: 35px;
+}
+table tr td {
+    border-bottom: 1px solid #ffdcdc;
+    height: 35px;
+    text-align: center;
+}
+table tr:last-child td {
+    border-bottom: 1px solid #ff7799;
+}
+
+table.board tr th img { width: 23px; }
+table.board tr th:first-child { width: 10%; }
+table.board tr th:nth-child(2) { width: 55%; }
+table.board tr th:nth-child(3) { width: 15%; }
+table.board tr th:nth-child(4) { width: 10%; }
+table.board tr th:last-child { width: 10%; }
+
+table.board tr td:nth-child(2) { text-align: left; }
+table.board tr td:nth-child(2):hover { text-decoration: underline; cursor: pointer; }
+
+table.reply tr th:first-child { width: 80%; }
+table.reply tr th:last-child { width: 20%; }
+table.reply tr td:first-child { text-align: left; padding-left: 30px; }
+table.reply tr td:first-child:hover { text-decoration: underline; cursor: pointer; }
+
+div.bottom-bar {
+    width: 800px;
+    margin: 0 auto;
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+div.bottom-bar > div:last-child {
+    text-align: right;
+}
+
+span.category { color: #888888; }
+span.replies { color: red; }
+
+span.page-num { margin: 5px; }
+span.page-num:hover{ cursor: pointer; }
+
+.cur-page {
+    color: #ff0066;
+    font-weight: bold;
+}

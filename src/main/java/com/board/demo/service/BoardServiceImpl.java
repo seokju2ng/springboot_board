@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Objects;
@@ -69,6 +70,19 @@ public class BoardServiceImpl implements BoardService {
         } catch (Exception e) {
             log.error("\n >> " + e.toString() + "\n >> There isn't a board no." + boardId);
         }
+    }
+
+    @Override
+    public int getListByMemberId(long memberId, int page, int size, ModelAndView mav) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Boardlist> boardlistPage = boardlistRepository.findAllByWriterId(memberId, pageRequest);
+        List<Boardlist> boards = boardlistPage.getContent();
+        boards.forEach(Conversion::convertDateFormatForArticleList);
+        Conversion.convertTitleLength(boards);
+        int totalPages = boardlistPage.getTotalPages();
+        mav.addObject("boards", boards);
+        mav.addObject("totalPages", totalPages);
+        return boards.size();
     }
 
     @Override

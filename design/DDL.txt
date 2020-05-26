@@ -83,7 +83,14 @@ LEFT JOIN member AS M ON(R.writer = M.member_id)
 ORDER BY parent, reply_id;
 
 
-
+CREATE VIEW mypage AS
+SELECT member_id, id, nickname, attendance, profile_photo, 
+       ifnull(nob, 0) AS board_num, ifnull(nor, 0) AS reply_num
+FROM member AS M
+LEFT JOIN (SELECT writer, COUNT(*) AS nob FROM board GROUP BY writer) AS B 
+ON(M.member_id = B.writer)
+LEFT JOIN (SELECT writer, COUNT(*) AS nor FROM reply GROUP BY writer) AS R
+ON(M.member_id = R.writer);
 
 
 

@@ -6,13 +6,13 @@ import com.board.demo.service.MemberLikeBoardService;
 import com.board.demo.service.ReplyService;
 import com.board.demo.util.Conversion;
 import com.board.demo.util.CurrentArticle;
+import com.board.demo.util.ErrorPage;
 import com.board.demo.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static com.board.demo.util.Constants.*;
 
@@ -57,14 +56,14 @@ public class BoardController {
         List<Boardlist> boards = boardlistPage.getContent();
 
         if (boards.size() == NOT_EXIST) {
-            return showErrorPage();
+            return ErrorPage.show();
         }
 
         List<Category> categories = categoryService.getList();
         int totalPage = boardlistPage.getTotalPages();
         int startPage = Conversion.calcStartPage(page);
 
-        Conversion.convertDateFormatForBoard(boards);
+        boards.forEach(Conversion::convertDateFormatForArticleList);
         Conversion.convertTitleLength(boards);
 
         mav.setViewName("board");
@@ -84,7 +83,7 @@ public class BoardController {
         Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 
         if (Objects.isNull(loginMember)) {
-            return showErrorPage();
+            return ErrorPage.show();
         }
         mav.setViewName("write_form");
         mav.addObject("categories", categoryService.getList());
@@ -117,7 +116,7 @@ public class BoardController {
     public ModelAndView showArticle(@PathVariable("idx") int boardId,
                                     HttpServletRequest request) {
         if (!boardService.addViews(boardId)) {
-            return showErrorPage();
+            return ErrorPage.show();
         }
         Member member = (Member)request.getSession().getAttribute("loginMember");
         ModelAndView mav = new ModelAndView();
@@ -146,7 +145,7 @@ public class BoardController {
         boolean result = replyService.writeReply(boardId, parent, content, member);
 
         if (!result) {
-            return showErrorPage();
+            return ErrorPage.show();
         }
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/board/"+boardId);
@@ -162,7 +161,7 @@ public class BoardController {
         boolean result = replyService.deleteReply(replyId, parent, member);
 
         if (!result) {
-            return showErrorPage();
+            return ErrorPage.show();
         }
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/board/"+boardId);
@@ -178,7 +177,7 @@ public class BoardController {
         if ( Objects.isNull(article) ||
              Objects.isNull(loginMember) ||
             (loginMember.getMemberId() != article.getWriterId()) ) {
-            return showErrorPage();
+            return ErrorPage.show();
         }
 
         ModelAndView mav = new ModelAndView();
@@ -251,7 +250,7 @@ public class BoardController {
         if ( Objects.isNull(article) ||
              Objects.isNull(loginMember) ||
             (loginMember.getMemberId() != article.getWriter()) ) {
-            return showErrorPage();
+            return ErrorPage.show();
         }
 
         boardService.deleteArticle(boardId);
@@ -260,13 +259,4 @@ public class BoardController {
         mav.setViewName("redirect:/board");
         return mav;
     }
-
-
-    private ModelAndView showErrorPage() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("err_404");
-        mav.addObject("err_msg", "요청하신 페이지를 찾을 수 없습니다.");
-        return mav;
-    }
-
 }

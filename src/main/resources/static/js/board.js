@@ -1,14 +1,4 @@
 $(document).ready(function(){
-    if ($('td').length === 0) {
-        Swal.fire({
-            title: '접근 오류',
-            text: '잘못된 접근입니다!',
-            icon: 'error'
-        }).then(() => {
-            location.href = '/board';
-        })
-    }
-
     $('span.page-num').eq(0).css('margin-left', '15px');
     $('span.page-num').eq($('span.page-num').length - 1).css('margin-right', '15px');
 

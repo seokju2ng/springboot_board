@@ -12,6 +12,7 @@
             <button id="login" class="button1" onclick="$.btnClick(this)">로그인</button>
         </c:when>
         <c:otherwise>
+            <button id="mypage" class="button1" onclick="$.btnClick(this)">마이페이지</button>
             <button id="logout" class="button1" onclick="$.btnClick(this)">로그아웃</button>
         </c:otherwise>
     </c:choose>

@@ -19,7 +19,7 @@
                 <div class="writer_info">
                     <div>
                         <div class="writer_profile_box">
-                            <img src="/static/img/null_profile.png" class="writer_profile"></img>
+                            <img src="/static/img/null_profile.png" class="writer_profile"/>
                         </div>
                         <div class="profile_area">
                             <div class="writer_nickname">
@@ -60,13 +60,12 @@
                                 <div id="comment_area${reply.replyId}" class="comment_area">
                                     <c:choose>
                                         <c:when test="${reply.profilePhoto == null}">
-                                            <c:set var="profilePhoto" value="null_profile.png"></c:set>
+                                            <img src="/static/img/null_profile.png" class="writer_profile">
                                         </c:when>
                                         <c:otherwise>
-                                            <c:set var="profilePhoto" value="${reply.profilePhoto}"></c:set>
+                                            <img src="/static/img/${reply.profilePhoto}.png" class="writer_profile">
                                         </c:otherwise>
                                     </c:choose>
-                                    <img src="/static/img/${profilePhoto}" class="writer_profile">
                                     <div class="comment_content">
                                         <div class="comment_nick_box">
                                             <span class="comment_nickname">${reply.nickname}</span>

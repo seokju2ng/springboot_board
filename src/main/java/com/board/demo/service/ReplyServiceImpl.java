@@ -7,7 +7,10 @@ import com.board.demo.vo.Member;
 import com.board.demo.vo.Reply;
 import com.board.demo.vo.Replylist;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -81,4 +84,19 @@ public class ReplyServiceImpl implements ReplyService {
 
         return !replyRepository.findById(replyId).isPresent();
     }
+
+    @Override
+    public int getListByMemberId(long memberId, int page, int size, ModelAndView mav) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Replylist> replylistPage = replylistRepository.findAllByMemberId(memberId, pageRequest);
+        List<Replylist> replies = replylistPage.getContent();
+        replies.forEach(Conversion::convertDateFormatForArticleList);
+        Conversion.convertContentLength(replies);
+        int totalPages = replylistPage.getTotalPages();
+        mav.addObject("replies", replies);
+        mav.addObject("totalPages", totalPages);
+        return replies.size();
+    }
+
+
 }

@@ -14,27 +14,35 @@ public class Conversion {
     private static final int TIME_START = 11;
     private static final int TIME_END = 16;
     private static final int BEGIN = 0;
-    private static final int MAX_LENGTH = 30;
+    private static final int MAX_TITLE_LENGTH = 30;
+    private static final int MAX_CONTENT_LENGTH = 45;
 
-    public static void convertDateFormatForBoard(List<Boardlist> boards) {
+    public static void convertDateFormatForArticleList(Article article) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String today = sdf.format(new Date());
-
-        boards.forEach(board -> {
-            if (board.getDate().substring(DATE_START, DATE_END).equals(today)) {
-                board.setDate(board.getDate().substring(TIME_START, TIME_END));
-            } else {
-                board.setDate(board.getDate().substring(DATE_START, DATE_END));
-            }
-        });
+        if (article.getDate().substring(DATE_START, DATE_END).equals(today)) {
+            article.setDate(article.getDate().substring(TIME_START, TIME_END));
+        } else {
+            article.setDate(article.getDate().substring(DATE_START, DATE_END));
+        }
     }
 
     public static void convertTitleLength(List<Boardlist> boards) {
         boards.forEach(board -> {
-            if (board.getTitle().length() > MAX_LENGTH) {
-                StringBuilder title = new StringBuilder(board.getTitle().substring(BEGIN, MAX_LENGTH));
+            if (board.getTitle().length() > MAX_TITLE_LENGTH) {
+                StringBuilder title = new StringBuilder(board.getTitle().substring(BEGIN, MAX_TITLE_LENGTH));
                 title.append( "...");
                 board.setTitle(title.toString());
+            }
+        });
+    }
+
+    public static void convertContentLength(List<Replylist> replies) {
+        replies.forEach(reply -> {
+            if (reply.getContent().length() > MAX_CONTENT_LENGTH) {
+                StringBuilder content = new StringBuilder(reply.getContent().substring(BEGIN, MAX_CONTENT_LENGTH));
+                content.append( "...");
+                reply.setContent(content.toString());
             }
         });
     }

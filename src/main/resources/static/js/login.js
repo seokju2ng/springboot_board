@@ -2,6 +2,7 @@ const LOG_IN_BTN = 'login';
 const LOG_OUT_BTN = 'logout';
 const JOIN_BTN = 'join';
 const FIND_PWD_BTN = 'find-pwd';
+const MY_PAGE = 'mypage';
 
 $.btnClick = function (btn) {
     let func = null;
@@ -14,9 +15,15 @@ $.btnClick = function (btn) {
             func = $.join; break;
         case FIND_PWD_BTN :
             func = $.findPwd; break;
+        case MY_PAGE :
+            func = $.mypage; break;
         default : return;
     }
     func();
+};
+
+$.mypage = function () {
+    location.href = '/mypage';
 };
 
 $.join = async function () {
@@ -39,9 +46,19 @@ $.join = async function () {
                     data: {id: inputId, pwd: inputPwd, email: inputEmail, nick: inputNick},
                     success: function (data) {
                         if (data.result === SUCCESS) {
-                            Swal.fire('회원가입 완료', '로그인 창으로 이동합니다', 'success').then($.login);
+                            Swal.fire({
+                                title: '회원가입 완료',
+                                text: '로그인 창으로 이동합니다',
+                                icon: 'success',
+                                confirmButtonColor: '#ff7799'
+                            }).then($.login);
                         } else {
-                            Swal.fire('가입 실패', '회원가입에 실패하였습니다', 'error');
+                            Swal.fire({
+                                title: '가입 실패',
+                                text: '회원가입에 실패하였습니다',
+                                icon: 'error',
+                                confirmButtonColor: '#ff7799'
+                            });
                         }
                     }
                 })
@@ -74,7 +91,12 @@ $.joinEmail = async function () {
     let inputEmail = await $.swalInput('email', '회원가입', '이메일 주소를 입력하세요', '다음 &rarr;');
     if (inputEmail === undefined) return;
     if (!isRight()) {   // 이메일 유효성 정규 표현식
-        await Swal.fire('유효성 실패', '유효하지 않은 이메일 주소입니다.', 'error');
+        await Swal.fire({
+            title: '유효성 실패',
+            text: '유효하지 않은 이메일 주소입니다.',
+            icon: 'error',
+            confirmButtonColor: '#ff7799'
+        });
         return await $.joinEmail();
     }
     return inputEmail;
@@ -88,11 +110,21 @@ $.joinPwd = async function () {
     let inputPwd = await $.swalTwoInputs('password', '회원가입', '비밀번호를 입력하세요', '비밀번호', '비밀번호 확인', '다음 &rarr;', '$.enter(this)');
     if (inputPwd === undefined) return;
     if (inputPwd[0] !== inputPwd[1]) {
-        await Swal.fire("비밀번호 불일치", "입력하신 두 비밀번호가 일치하지 않습니다.", "error");
+        await Swal.fire({
+            title: "비밀번호 불일치",
+            text: "입력하신 두 비밀번호가 일치하지 않습니다.",
+            icon: "error",
+            confirmButtonColor: '#ff7799'
+        });
         return await $.joinPwd();
     }
     if (inputPwd[0].trim() === "") {
-        await Swal.fire("비밀번호 오류", "비밀번호는 공백이 될 수 없습니다.", "error");
+        await Swal.fire({
+            title: "비밀번호 오류",
+            text: "비밀번호는 공백이 될 수 없습니다.",
+            icon: "error",
+            confirmButtonColor: '#ff7799'
+        });
         return await $.joinPwd();
     }
     return inputPwd[0];
@@ -158,7 +190,12 @@ $.login = async function (where) {
         success: function (data){
             switch (data.result) {
                 case FAIL:
-                    Swal.fire("로그인 실패", "아이디와 비밀번호를 다시 확인해주세요.", "error").then($.login);
+                    Swal.fire({
+                        title: "로그인 실패",
+                        text: "아이디와 비밀번호를 다시 확인해주세요.",
+                        icon: "error",
+                        confirmButtonColor: '#ff7799'
+                    }).then($.login);
                     break;
                 case ADMIN:
                     Swal.fire('로그인 성공', '관리자님 안녕하세요.', 'success')
@@ -167,14 +204,17 @@ $.login = async function (where) {
                         });
                     break;
                 case SUCCESS:
-                    Swal.fire('로그인 성공', data.nick + '님 안녕하세요.', 'success')
-                        .then(function(){
-                            // if (where !== undefined) {
+                    Swal.fire({
+                        title: '로그인 성공',
+                        text: data.nick + '님 안녕하세요.',
+                        icon: 'success',
+                        confirmButtonColor: '#ff7799'
+                    }).then(() => {
+                        if (where !== undefined)
+                            location.href = where;
+                        else
                             location.reload(true);
-                            // }
-                            // $('button#login').text("로그아웃");
-                            // $('button#login').attr('id', 'logout');
-                        });
+                    });
                     break;
                 default :
                     break;
