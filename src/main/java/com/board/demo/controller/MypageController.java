@@ -5,23 +5,26 @@ import com.board.demo.service.MemberService;
 import com.board.demo.service.MypageService;
 import com.board.demo.service.ReplyService;
 import com.board.demo.util.Conversion;
-import com.board.demo.util.ErrorPage;
-import com.board.demo.vo.Boardlist;
+import com.board.demo.util.FileIO;
 import com.board.demo.vo.Member;
 import com.board.demo.vo.Mypage;
-import com.board.demo.vo.Replylist;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Objects;
+
+import static com.board.demo.util.Constants.*;
 
 @Slf4j
 @Controller
@@ -45,23 +48,23 @@ public class MypageController {
 
     @GetMapping
     public ModelAndView showMypage(HttpServletRequest request,
-               @RequestParam(defaultValue = DEFAULT_TYPE, required = false) String type,
-               @RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page) {
+                                   @RequestParam(defaultValue = DEFAULT_TYPE, required = false) String type,
+                                   @RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page) {
         ModelAndView mav = new ModelAndView();
         Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 
         if (Objects.isNull(loginMember)) {
-            return ErrorPage.show();
+            mav.setViewName("redirect:/board");
+            return mav;
         }
 
         Mypage mypage = mypageService.getMypageInfo(loginMember.getMemberId());
         mav.addObject("mypage", mypage);
 
         if (type.equals(DEFAULT_TYPE)) {    // 등록한 게시글 요청
-            boardService.getListByMemberId(loginMember.getMemberId(), page-1, DEFAULT_LIST_SIZE, mav);
-        }
-        else {  // 등록한 댓글 요청
-            replyService.getListByMemberId(loginMember.getMemberId(), page-1, DEFAULT_LIST_SIZE, mav);
+            boardService.getListByMemberId(loginMember.getMemberId(), page - 1, DEFAULT_LIST_SIZE, mav);
+        } else {  // 등록한 댓글 요청
+            replyService.getListByMemberId(loginMember.getMemberId(), page - 1, DEFAULT_LIST_SIZE, mav);
         }
 
         int startPage = Conversion.calcStartPage(page);
@@ -70,5 +73,34 @@ public class MypageController {
         mav.addObject("startPage", startPage);
         mav.setViewName("my_page");
         return mav;
+    }
+
+    @PostMapping(value = "/set-profile")
+    public void setProfileImage(@RequestParam("file") MultipartFile file,
+                                HttpServletRequest request,
+                                HttpServletResponse response) throws IOException {
+//        log.info("setProfileImage entered.. ");
+//        log.info(file.getOriginalFilename());
+//        log.info(file.getName());
+        Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+        JSONObject res = new JSONObject();
+        if (Objects.isNull(loginMember) || file.isEmpty()) {
+            // exception
+            res.put("result", INVALID_APPROACH);
+        }
+        String folder = loginMember.getMemberId() + "";
+        String filename = Conversion.convertImageName(file.getOriginalFilename());
+        if (FileIO.saveImage(folder, filename, file.getBytes())) {
+            if (memberService.setProfilePhoto(loginMember.getMemberId(), filename)) {
+                res.put("result", SUCCESS);
+            } else {
+                res.put("result", FAIL);
+            }
+        } else {
+            res.put("result", FAIL);
+        }
+
+        response.setContentType("application/json; charset=utf-8");
+        response.getWriter().print(res);
     }
 }

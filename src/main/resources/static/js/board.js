@@ -1,6 +1,8 @@
 $(document).ready(function(){
     $('span.page-num').eq(0).css('margin-left', '15px');
     $('span.page-num').eq($('span.page-num').length - 1).css('margin-right', '15px');
+    $.setImage();
+    $.setProfileImageLocation();
 
     $('button#write').click($.write);
     $('select#category').change($.reload);
@@ -8,8 +10,26 @@ $(document).ready(function(){
     $('table.board tr td:nth-child(2)').click(function (event) {
         let idx = event.target.id;
         location.href = "/board/"+idx;
-    })
+    });
 });
+
+$.setImage = () => {
+    let profiles = $('.profile_photo');
+    for (let i = 0; i < profiles.length; i++) {
+        let id = profiles[i].id.substr(7, profiles[i].id.length);
+        let value = $('#imgValue' + id).val().split(':');
+        let middlePath = value[0];
+        let fileName = value[1];
+        let src = '/member/get-profile?middlePath=' + encodeURI(middlePath) + '&imageFileName=' + encodeURI(fileName);
+        $('#profile' + id).attr('src', src);
+    }
+};
+
+$.setProfileImageLocation = function () {
+    let left = $('.profile_photo').css('left');
+    left = left.substr(0, left.length-2) * 1 - 23;
+    $('.profile_photo').css('left', left + 'px');
+};
 
 $.prev = function (startPage) {
     $.reload(startPage - 1);

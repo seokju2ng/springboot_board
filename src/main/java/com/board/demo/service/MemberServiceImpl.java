@@ -52,4 +52,16 @@ public class MemberServiceImpl implements MemberService {
                 .build()
         );
     }
+
+    @Override
+    public boolean setProfilePhoto(long memberId, String profilePath) {
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+        if (!memberOptional.isPresent()) {
+            return false;
+        }
+        Member member = memberOptional.get();
+        member.setProfilePhoto(profilePath);
+        memberRepository.save(member);
+        return true;
+    }
 }

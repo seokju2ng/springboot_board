@@ -19,7 +19,15 @@
                 <div class="writer_info">
                     <div>
                         <div class="writer_profile_box">
-                            <img src="/static/img/null_profile.png" class="writer_profile"/>
+                            <c:choose>
+                                <c:when test="${article.profile == null}">
+                                    <img src="/static/img/null_profile.png" class="writer_profile article_profile"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <img id="article_writer_profile" src="" class="writer_profile article_profile"/>
+                                    <input type="hidden" id="article_value" value="${article.writerId}:${article.profile}"/>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="profile_area">
                             <div class="writer_nickname">
@@ -55,7 +63,7 @@
                 </div>
                 <div class="comment_box">
                     <ul class="comment_list">
-                        <c:forEach var="reply" items="${replies}">
+                        <c:forEach var="reply" items="${replies}" varStatus="status">
                             <li class="comment_item <c:if test="${reply.parent != reply.replyId}">comment_item_reply</c:if>">
                                 <div id="comment_area${reply.replyId}" class="comment_area">
                                     <c:choose>
@@ -63,7 +71,8 @@
                                             <img src="/static/img/null_profile.png" class="writer_profile">
                                         </c:when>
                                         <c:otherwise>
-                                            <img src="/static/img/${reply.profilePhoto}.png" class="writer_profile">
+                                            <img id="profile${status.index}" src="" class="writer_profile"/>
+                                            <input type="hidden" id="imgValue${status.index}" value="${reply.memberId}:${reply.profilePhoto}"/>
                                         </c:otherwise>
                                     </c:choose>
                                     <div class="comment_content">

@@ -20,11 +20,12 @@
     <div class="profile_info">
         <div class="profile_box">
         <c:choose>
-            <c:when test="${mypage.profilePhoto != 'NULL'}">
+            <c:when test="${mypage.profilePhoto == null}">
                 <img src="/static/img/null_profile.png" class="profile_photo"/>
             </c:when>
             <c:otherwise>
-                <img src="/static/img/${mypage.profilePhoto}.png" class="profile_photo"/>
+                <img id="profile" src="" class="profile_photo"/>
+                <input type="hidden" id="imgValue" value="${mypage.memberId}:${mypage.profilePhoto}"/>
             </c:otherwise>
         </c:choose>
         </div>

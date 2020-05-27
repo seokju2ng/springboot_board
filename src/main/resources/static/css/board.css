@@ -118,3 +118,9 @@ span.page-num:hover{ cursor: pointer; }
     color: #ff0066;
     font-weight: bold;
 }
+
+.profile_photo {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+}

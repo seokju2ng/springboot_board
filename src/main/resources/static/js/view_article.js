@@ -1,7 +1,36 @@
 $(document).ready(function () {
+    // $('.article_profile').click($.setImage);
+    $.setWriterImage();
+    $.setCommentImages();
+    // $('.article_profile').click($.setCommentImages);
     $(".comment_info_button").click(showReplyWriteForm);
     $('.like_article').click($.clickLikeButton);
 });
+
+$.setWriterImage = () => {
+    if ($('.article_profile')[0].id === '') return;
+    let value = $('#article_value').val().split(':');
+    let middlePath = value[0];
+    let fileName = value[1];
+    let src = '/member/get-profile?middlePath=' + encodeURI(middlePath) + '&imageFileName=' + encodeURI(fileName);
+    console.log(src);
+    $('#article_writer_profile').attr('src', src);
+};
+
+$.setCommentImages = () => {
+    let profiles = $('.writer_profile');
+    // console.log(profiles);
+    for (let i = 1; i < profiles.length; i++) {
+        // console.log(profiles[i].id);
+        if (profiles[i].id === '') continue;
+        let id = profiles[i].id.substr(7, profiles[i].id.length);
+        let value = $('#imgValue' + id).val().split(':');
+        let middlePath = value[0];
+        let fileName = value[1];
+        let src = '/member/get-profile?middlePath=' + encodeURI(middlePath) + '&imageFileName=' + encodeURI(fileName);
+        $('#profile' + id).attr('src', src);
+    }
+};
 
 $.clickLikeButton = function () {
     if ($('.comment_writer').length === 0) return;

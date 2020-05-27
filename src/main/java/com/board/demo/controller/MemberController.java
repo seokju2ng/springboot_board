@@ -1,6 +1,7 @@
 package com.board.demo.controller;
 
 import com.board.demo.service.MemberService;
+import com.board.demo.util.FileIO;
 import com.board.demo.vo.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
@@ -115,5 +119,15 @@ public class MemberController {
 
         response.setContentType("application/json; charset=utf-8");
         response.getWriter().print(res);
+    }
+
+    @GetMapping("/get-profile")
+    public void getProfilePhoto(@RequestParam String middlePath,
+                                @RequestParam String imageFileName,
+                                HttpServletRequest request,
+                                HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html; charset=utf-8");
+        FileIO.loadImage(middlePath, imageFileName, response);
     }
 }

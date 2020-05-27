@@ -8,11 +8,12 @@
 .profile_box {
     position: absolute;
 }
-.profile_box > img {
+.profile_photo {
     width: 80px;
+    height: 80px;
     border-radius: 50%;
 }
-.profile_box > img:hover {
+.profile_photo:hover {
     cursor: pointer;
 }
 .text {

@@ -93,7 +93,7 @@
                     <th>조회</th>
                     <th><img src="/static/img/heart_full.png"></th>
                 </tr>
-            <c:forEach var="board" items="${boards}">
+            <c:forEach var="board" items="${boards}" varStatus="status">
                 <tr>
                     <td>${board.boardId}</td>
                     <td id="${board.boardId}">
@@ -107,7 +107,8 @@
                     </td>
                     <td>
                         <c:if test="${board.profile != null}">
-                            <!-- 사진 조그맣게 넣을 공간 -->
+                            <img id="profile${status.index}" src="" class="profile_photo"/>
+                            <input type="hidden" id="imgValue${status.index}" value="${board.writerId}:${board.profile}"/>
                         </c:if>
                         ${board.writerNickname}
                     </td>

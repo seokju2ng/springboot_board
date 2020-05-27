@@ -10,4 +10,5 @@ public interface MemberService {
     Member login(String id, String pwd) throws NoSuchAlgorithmException;
     boolean isDuplicate(String id);
     Member join(String id, String pwd, String email, String nick) throws NoSuchAlgorithmException;
+    boolean setProfilePhoto(long memberId, String profilePath);
 }

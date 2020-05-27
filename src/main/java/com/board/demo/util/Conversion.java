@@ -7,6 +7,7 @@ import com.board.demo.vo.Replylist;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class Conversion {
     private static final int DATE_START = 0;
@@ -16,6 +17,7 @@ public class Conversion {
     private static final int BEGIN = 0;
     private static final int MAX_TITLE_LENGTH = 30;
     private static final int MAX_CONTENT_LENGTH = 45;
+    private static final int MAX_IMAGE_LENGHT = 25;
 
     public static void convertDateFormatForArticleList(Article article) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -58,5 +60,15 @@ public class Conversion {
 
     public static void convertDateFormatForArticle(Article article) {
         article.setDate(article.getDate().substring(DATE_START, TIME_END));
+    }
+
+    public static String convertImageName(String originalFilename) {
+        if (originalFilename.length() > MAX_TITLE_LENGTH) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(originalFilename.substring(BEGIN, MAX_IMAGE_LENGHT));
+            sb.append(".png");
+            return sb.toString();
+        }
+        return originalFilename;
     }
 }
