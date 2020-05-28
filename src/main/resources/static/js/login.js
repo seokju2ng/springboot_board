@@ -38,8 +38,11 @@ $.join = async function () {
                 Swal.fire("아이디 중복", "다른 아이디를 입력해주세요", "error").then($.join);
             } else {
                 let inputPwd = await $.joinPwd();
+                if (inputPwd === undefined) return;
                 let inputEmail = await $.joinEmail();
+                if (inputEmail === undefined) return;
                 let inputNick = await $.swalInput('text', '회원가입', '닉네임을 입력하세요', '회원가입');
+                if (inputNick === undefined) return;
                 $.ajax({
                     url: '/member/join',
                     type: 'POST',
@@ -51,7 +54,7 @@ $.join = async function () {
                                 text: '로그인 창으로 이동합니다',
                                 icon: 'success',
                                 confirmButtonColor: '#ff7799'
-                            }).then($.login);
+                            }).then(()=>$.login());
                         } else {
                             Swal.fire({
                                 title: '가입 실패',
@@ -89,7 +92,7 @@ $.joinNick = async function () {
 
 $.joinEmail = async function () {
     let inputEmail = await $.swalInput('email', '회원가입', '이메일 주소를 입력하세요', '다음 &rarr;');
-    if (inputEmail === undefined) return;
+    if (inputEmail === undefined) return undefined;
     if (!isRight()) {   // 이메일 유효성 정규 표현식
         await Swal.fire({
             title: '유효성 실패',
@@ -108,7 +111,7 @@ function isRight() {
 
 $.joinPwd = async function () {
     let inputPwd = await $.swalTwoInputs('password', '회원가입', '비밀번호를 입력하세요', '비밀번호', '비밀번호 확인', '다음 &rarr;', '$.enter(this)');
-    if (inputPwd === undefined) return;
+    if (inputPwd === undefined) return undefined;
     if (inputPwd[0] !== inputPwd[1]) {
         await Swal.fire({
             title: "비밀번호 불일치",
@@ -204,6 +207,7 @@ $.login = async function (where) {
                         });
                     break;
                 case SUCCESS:
+                    console.log(where);
                     Swal.fire({
                         title: '로그인 성공',
                         text: data.nick + '님 안녕하세요.',

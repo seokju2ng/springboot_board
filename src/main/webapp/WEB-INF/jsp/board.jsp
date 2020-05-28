@@ -110,7 +110,7 @@
                             <img id="profile${status.index}" src="" class="profile_photo"/>
                             <input type="hidden" id="imgValue${status.index}" value="${board.writerId}:${board.profile}"/>
                         </c:if>
-                        ${board.writerNickname}
+                        <span>${board.writerNickname}</span>
                     </td>
                     <td>${board.date}</td>
                     <td>${board.views}</td>

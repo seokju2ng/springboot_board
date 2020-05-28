@@ -2,8 +2,6 @@ $(document).ready(function(){
     $('span.page-num').eq(0).css('margin-left', '15px');
     $('span.page-num').eq($('span.page-num').length - 1).css('margin-right', '15px');
     $.setImage();
-    $.setProfileImageLocation();
-
     $('button#write').click($.write);
     $('select#category').change($.reload);
     $('select#list-size').change($.reload);
@@ -25,11 +23,6 @@ $.setImage = () => {
     }
 };
 
-$.setProfileImageLocation = function () {
-    let left = $('.profile_photo').css('left');
-    left = left.substr(0, left.length-2) * 1 - 23;
-    $('.profile_photo').css('left', left + 'px');
-};
 
 $.prev = function (startPage) {
     $.reload(startPage - 1);
