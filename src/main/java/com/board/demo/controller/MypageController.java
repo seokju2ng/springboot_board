@@ -47,24 +47,29 @@ public class MypageController {
     private MypageService mypageService;
 
     @GetMapping
-    public ModelAndView showMypage(HttpServletRequest request,
-                                   @RequestParam(defaultValue = DEFAULT_TYPE, required = false) String type,
-                                   @RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page) {
+    public ModelAndView showMypage(@RequestParam(defaultValue = DEFAULT_TYPE, required = false) String type,
+                                   @RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page,
+                                   @RequestParam(value = "id", required = false) Long memberId,
+                                   HttpServletRequest request) {
+        log.info("mypage > id: "+memberId);
         ModelAndView mav = new ModelAndView();
-        Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 
-        if (Objects.isNull(loginMember)) {
-            mav.setViewName("redirect:/board");
-            return mav;
+        if (Objects.isNull(memberId)) {
+            Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+            if (Objects.isNull(loginMember)) {
+                mav.setViewName("redirect:/board");
+                return mav;
+            }
+            memberId = loginMember.getMemberId();
         }
 
-        Mypage mypage = mypageService.getMypageInfo(loginMember.getMemberId());
+        Mypage mypage = mypageService.getMypageInfo(memberId);
         mav.addObject("mypage", mypage);
 
         if (type.equals(DEFAULT_TYPE)) {    // 등록한 게시글 요청
-            boardService.getListByMemberId(loginMember.getMemberId(), page - 1, DEFAULT_LIST_SIZE, mav);
+            boardService.getListByMemberId(memberId, page - 1, DEFAULT_LIST_SIZE, mav);
         } else {  // 등록한 댓글 요청
-            replyService.getListByMemberId(loginMember.getMemberId(), page - 1, DEFAULT_LIST_SIZE, mav);
+            replyService.getListByMemberId(memberId, page - 1, DEFAULT_LIST_SIZE, mav);
         }
 
         int startPage = Conversion.calcStartPage(page);

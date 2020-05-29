@@ -6,16 +6,17 @@ $(document).ready(() => {
     $('button#write').click($.write);
     $('.content_subtitle.not_selected').click($.changeType);
     $('.shortcuts').click($.showArticle);
-    $('.profile_photo').click($.fileUpload);
+    // $('.profile_photo').click($.fileUpload);
 });
 
 $.setImage = () => {
     if ($('.profile_photo')[0].id === '') return;
-    let value = $('#imgValue').val().split(':');
-    let middlePath = value[0];
-    let fileName = value[1];
+    let id = $('.nick_area').attr('id');
+    let middlePath = id.substr(3, id.length);
+    let fileName = $('#imgValue').val();
+    console.log(middlePath);
     let src = '/member/get-profile?middlePath=' + encodeURI(middlePath) + '&imageFileName=' + encodeURI(fileName);
-    // console.log(src);
+    console.log(src);
     $('#profile').attr('src', src);
 };
 
@@ -24,6 +25,7 @@ $.fileUpload = async function () {
     const { value: file } = await Swal.fire({
         title: '프로필 사진',
         input: 'file',
+        confirmButtonColor: '#ff7799',
         inputAttributes: {
             'accept': 'image/*',
             'aria-label': 'Upload your profile picture'
@@ -91,13 +93,18 @@ $.home = function () {
     location.href = "/board";
 };
 
-
 $.showArticle = function (event) {
     location.href = '/board/' + event.target.id;
 };
 
 $.changeType = function (event) {
-    location.href = '/mypage?type=' + event.target.id;
+    let url = '/mypage?type=' + event.target.id;
+    if (!isMypage) {
+        let id = $('.nick_area').attr('id');
+        id = id.substr(3, id.length);
+        url += ('&id=' + id);
+    }
+    location.href = url;
 };
 
 $.write = function () {
@@ -119,5 +126,10 @@ $.next = function (endPage) {
 $.reload = function (page) {
     let type = $('.content_subtitle.selected').attr('id');
     let requrl = "/mypage?type=" + type + "&page=" + page;
+    if (!isMypage) {
+        let id = $('.nick_area').attr('id');
+        id = id.substr(3, id.length);
+        requrl += ('&id=' + id);
+    }
     location.href = requrl;
 };

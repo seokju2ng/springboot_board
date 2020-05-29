@@ -13,7 +13,7 @@
     height: 80px;
     border-radius: 50%;
 }
-.profile_photo:hover {
+.profile_photo.my_profile:hover {
     cursor: pointer;
 }
 .text {

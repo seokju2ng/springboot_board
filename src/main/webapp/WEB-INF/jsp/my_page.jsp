@@ -21,16 +21,16 @@
         <div class="profile_box">
         <c:choose>
             <c:when test="${mypage.profilePhoto == null}">
-                <img src="/static/img/null_profile.png" class="profile_photo"/>
+                <img src="/static/img/null_profile.png" class="profile_photo <c:if test="${mypage.memberId == loginMember.memberId}">my_profile" onclick="$.fileUpload()</c:if>"/>
             </c:when>
             <c:otherwise>
-                <img id="profile" src="" class="profile_photo"/>
-                <input type="hidden" id="imgValue" value="${mypage.memberId}:${mypage.profilePhoto}"/>
+                <img id="profile" src="" class="profile_photo <c:if test="${mypage.memberId == loginMember.memberId}">my_profile " onclick="$.fileUpload()</c:if>"/>
+                <input type="hidden" id="imgValue" value="${mypage.profilePhoto}"/>
             </c:otherwise>
         </c:choose>
         </div>
         <div class="text">
-            <div class="nick_area">${mypage.nickname}(${mypage.id})</div>
+            <div id="mem${mypage.memberId}" class="nick_area">${mypage.nickname}(${mypage.id})</div>
             <div class="desc">
                 <span class="count">총 방문<em class="num">${mypage.attendance}</em>회</span>
                 <span class="count">총 게시글<em class="num">${mypage.boardNum}</em>개</span>
@@ -133,6 +133,7 @@
         </div>
     </div>
 </div>
+<script> const isMypage = ${mypage.memberId == loginMember.memberId}; </script>
 <script src="/static/js/my_page.js"></script>
 </body>
 </html>

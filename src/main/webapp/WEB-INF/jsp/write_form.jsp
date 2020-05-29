@@ -15,9 +15,16 @@
             <span class="subtitle">말머리</span>
             <select name="category" class="swal2-select">
                 <c:forEach var="category" items="${categories}">
-                    <c:if test="${category.categoryId != 9999}">
-                    <option value="${category.categoryId}">${category.categoryName}</option>
-                    </c:if>
+                    <c:choose>
+                        <c:when test="${category.categoryId == 9999}">
+                            <c:if test="${loginMember.memberId == 0}">
+                            <option value="${category.categoryId}">${category.categoryName}</option>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <option value="${category.categoryId}">${category.categoryName}</option>
+                        </c:otherwise>
+                    </c:choose>
                 </c:forEach>
             </select>
             <span class="subtitle">제목</span>

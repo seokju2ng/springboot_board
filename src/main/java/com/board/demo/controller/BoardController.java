@@ -83,7 +83,8 @@ public class BoardController {
         Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 
         if (Objects.isNull(loginMember)) {
-            return ErrorPage.show();
+            mav.setViewName("redirect:/board");
+            return mav;
         }
         mav.setViewName("write_form");
         mav.addObject("categories", categoryService.getList());

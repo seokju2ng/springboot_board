@@ -3,6 +3,7 @@ const LOG_OUT_BTN = 'logout';
 const JOIN_BTN = 'join';
 const FIND_PWD_BTN = 'find-pwd';
 const MY_PAGE = 'mypage';
+const ADMIN_BTN = 'admin';
 
 $.btnClick = function (btn) {
     let func = null;
@@ -17,9 +18,15 @@ $.btnClick = function (btn) {
             func = $.findPwd; break;
         case MY_PAGE :
             func = $.mypage; break;
+        case ADMIN_BTN :
+            func = $.admin; break;
         default : return;
     }
     func();
+};
+
+$.admin = function () {
+    location.href = '/admin';
 };
 
 $.mypage = function () {
@@ -203,7 +210,7 @@ $.login = async function (where) {
                 case ADMIN:
                     Swal.fire('로그인 성공', '관리자님 안녕하세요.', 'success')
                         .then(function(){
-                            // 관리자 로그인시
+                            location.reload(true);
                         });
                     break;
                 case SUCCESS:
