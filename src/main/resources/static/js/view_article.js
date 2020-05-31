@@ -5,7 +5,13 @@ $(document).ready(function () {
     // $('.article_profile').click($.setCommentImages);
     $(".comment_info_button").click(showReplyWriteForm);
     $('.like_article').click($.clickLikeButton);
+    $('span.member').click($.showMemberInfo);
 });
+
+$.showMemberInfo = function (event) {
+    let mid = event.target.id.substr(1);
+    location.href = "/mypage?id="+mid;
+};
 
 $.setWriterImage = () => {
     if ($('.article_profile')[0].id === '') return;
@@ -13,7 +19,7 @@ $.setWriterImage = () => {
     let middlePath = value[0];
     let fileName = value[1];
     let src = '/member/get-profile?middlePath=' + encodeURI(middlePath) + '&imageFileName=' + encodeURI(fileName);
-    console.log(src);
+    // console.log(src);
     $('#article_writer_profile').attr('src', src);
 };
 

@@ -160,3 +160,6 @@ div.views {
 .delete_comment {
     color: #888888;
 }
+.member:hover {
+    cursor: pointer;
+}

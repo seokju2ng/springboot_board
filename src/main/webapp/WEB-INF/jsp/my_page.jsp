@@ -107,7 +107,9 @@
         </c:choose>
         <div class="bottom-bar">
             <div>
+                <c:if test="${loginMember != null}">
                 <button id="write" class="button1">글쓰기</button>
+                </c:if>
             </div>
             <div>
                 <c:if test="${totalPages != 0}">

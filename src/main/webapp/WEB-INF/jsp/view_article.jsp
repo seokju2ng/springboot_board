@@ -31,7 +31,7 @@
                         </div>
                         <div class="profile_area">
                             <div class="writer_nickname">
-                                <span>${article.writerNickname}</span>
+                                <span id="m${article.writerId}" class="member">${article.writerNickname}</span>
                             </div>
                             <div class="write_time">
                                 <span>${article.date}</span>
@@ -77,7 +77,7 @@
                                     </c:choose>
                                     <div class="comment_content">
                                         <div class="comment_nick_box">
-                                            <span class="comment_nickname">${reply.nickname}</span>
+                                            <span class="comment_nickname member" id="m${reply.memberId}">${reply.nickname}</span>
                                         </div>
                                         <div class="comment_text_box">
                                             <c:choose>

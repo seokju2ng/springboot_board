@@ -2,14 +2,23 @@ $(document).ready(function(){
     $('span.page-num').eq(0).css('margin-left', '15px');
     $('span.page-num').eq($('span.page-num').length - 1).css('margin-right', '15px');
     $.setImage();
+
     $('button#write').click($.write);
     $('select#category').change($.reload);
     $('select#list-size').change($.reload);
-    $('table.board tr td:nth-child(2)').click(function (event) {
-        let idx = event.target.id;
-        location.href = "/board/"+idx;
-    });
+    $('table.board tr td:nth-child(2)').click($.showBoard);
+    $('td.member').click($.showMemberInfo);
 });
+
+$.showMemberInfo = function () {
+    let mid = $(this).closest('td').attr('id').substr(1);
+    location.href = "/mypage?id="+mid;
+};
+
+$.showBoard = function (event) {
+    let idx = event.target.id;
+    location.href = "/board/"+idx;
+};
 
 $.setImage = () => {
     let profiles = $('.profile_photo');

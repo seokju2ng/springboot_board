@@ -108,11 +108,7 @@ $.changeType = function (event) {
 };
 
 $.write = function () {
-    if($('div.login button').attr('id') === 'login') {
-        $.login('/board/write');
-    } else {
-        location.href = "/board/write";
-    }
+    location.href = "/board/write";
 };
 
 $.prev = function (startPage) {

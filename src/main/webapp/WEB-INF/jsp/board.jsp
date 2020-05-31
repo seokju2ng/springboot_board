@@ -105,7 +105,7 @@
                         <span class="replies">[${board.replies}]</span>
                     </c:if>
                     </td>
-                    <td>
+                    <td class="member" id="m${board.writerId}">
                         <c:if test="${board.profile != null}">
                             <img id="profile${status.index}" src="" class="profile_photo"/>
                             <input type="hidden" id="imgValue${status.index}" value="${board.writerId}:${board.profile}"/>
