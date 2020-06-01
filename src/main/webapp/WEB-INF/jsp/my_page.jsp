@@ -24,8 +24,15 @@
                 <img src="/static/img/null_profile.png" class="profile_photo <c:if test="${mypage.memberId == loginMember.memberId}">my_profile" onclick="$.fileUpload()</c:if>"/>
             </c:when>
             <c:otherwise>
-                <img id="profile" src="" class="profile_photo <c:if test="${mypage.memberId == loginMember.memberId}">my_profile " onclick="$.fileUpload()</c:if>"/>
-                <input type="hidden" id="imgValue" value="${mypage.profilePhoto}"/>
+                <img src="/member/get-profile?middlePath=${mypage.memberId}&imageFileName=${mypage.profilePhoto}" class="profile_photo
+                <c:choose>
+                    <c:when test="${mypage.memberId == loginMember.memberId}">
+                        my_profile" onclick="$.fileUpload()">
+                    </c:when>
+                    <c:otherwise>
+                        view_profile">
+                    </c:otherwise>
+                </c:choose>
             </c:otherwise>
         </c:choose>
         </div>

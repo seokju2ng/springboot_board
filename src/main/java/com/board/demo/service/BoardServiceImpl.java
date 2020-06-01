@@ -93,7 +93,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Boardlist> getTopLikes() {
-        return boardlistRepository.findTop5ByOrderByLikesDesc();
+        return boardlistRepository.findTopLikes();
     }
 
     @Override

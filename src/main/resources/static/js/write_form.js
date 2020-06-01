@@ -28,7 +28,8 @@ $.write = function () {
                         Swal.fire({
                             title: '등록 완료',
                             text: '작성한 글이 등록되었습니다.',
-                            icon: 'success'
+                            icon: 'success',
+                            confirmButtonColor: '#ff7799'
                         }).then(() => {
                             location.href = "/board";
                         });

@@ -130,7 +130,9 @@ public class BoardRepositoryTest {
 
     @Test
     public void selectToplikes() {
-        List<Boardlist> topLikes = boardlistRepository.findTop5ByOrderByLikesDesc();
-        log.info(topLikes.toString());
+        List<Boardlist> topLikes = boardlistRepository.findTopLikes();
+        topLikes.forEach(l -> {
+            log.info(l.getBoardId() +": "+ l.getTitle() +" ("+l.getLikes()+")");
+        });
     }
 }

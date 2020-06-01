@@ -47,6 +47,9 @@ SELECT * FROM (SELECT * FROM board list WHERE board_id < 16 ORDER BY board_id de
 UNION
 SELECT * FROM (SELECT * FROM board list WHERE board_id > 16 ORDER BY board_id asc LIMIT 1) B;
 
+SELECT * FROM (SELECT * FROM board WHERE board_id < 16 ORDER BY board_id desc LIMIT 1) A
+UNION
+SELECT * FROM (SELECT * FROM board WHERE board_id > 16 ORDER BY board_id asc LIMIT 1) B;
 
 
 CREATE TRIGGER insertReplyTrigger

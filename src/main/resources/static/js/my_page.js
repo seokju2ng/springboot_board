@@ -1,25 +1,18 @@
 $(document).ready(() => {
     $('span.page-num').eq(0).css('margin-left', '15px');
     $('span.page-num').eq($('span.page-num').length - 1).css('margin-right', '15px');
-    $.setImage();
 
     $('button#write').click($.write);
     $('.content_subtitle.not_selected').click($.changeType);
     $('.shortcuts').click($.showArticle);
-    // $('.profile_photo').click($.fileUpload);
+    $('.view_profile').click($.showImage);
 });
 
-$.setImage = () => {
-    if ($('.profile_photo')[0].id === '') return;
-    let id = $('.nick_area').attr('id');
-    let middlePath = id.substr(3, id.length);
-    let fileName = $('#imgValue').val();
-    console.log(middlePath);
-    let src = '/member/get-profile?middlePath=' + encodeURI(middlePath) + '&imageFileName=' + encodeURI(fileName);
-    console.log(src);
-    $('#profile').attr('src', src);
+$.showImage = function (event) {
+    let id = event.target.src.split("=")[1].split('&')[0];
+    let url = '/mypage/show-profile?id=' + id;
+    window.open(url,"new", "width=500, height=500, top=150, left=150, resizable=no");
 };
-
 
 $.fileUpload = async function () {
     const { value: file } = await Swal.fire({

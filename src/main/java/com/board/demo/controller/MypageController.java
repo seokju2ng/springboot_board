@@ -8,6 +8,7 @@ import com.board.demo.util.Conversion;
 import com.board.demo.util.FileIO;
 import com.board.demo.vo.Member;
 import com.board.demo.vo.Mypage;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +81,16 @@ public class MypageController {
         return mav;
     }
 
-    @PostMapping(value = "/set-profile")
+    @GetMapping("/show-profile")
+    public ModelAndView showProfileImage(@RequestParam(value = "id") Long memberId) {
+        ModelAndView mav = new ModelAndView();
+        Mypage mypage = mypageService.getMypageInfo(memberId);
+        mav.addObject("mypage", mypage);
+        mav.setViewName("show_profile");
+        return mav;
+    }
+
+    @PostMapping("/set-profile")
     public void setProfileImage(@RequestParam("file") MultipartFile file,
                                 HttpServletRequest request,
                                 HttpServletResponse response) throws IOException {

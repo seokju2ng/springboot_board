@@ -24,8 +24,7 @@
                                     <img src="/static/img/null_profile.png" class="writer_profile article_profile"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <img id="article_writer_profile" src="" class="writer_profile article_profile"/>
-                                    <input type="hidden" id="article_value" value="${article.writerId}:${article.profile}"/>
+                                    <img src="/member/get-profile?middlePath=${article.writerId}&imageFileName=${article.profile}" class="writer_profile view_profile">
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -71,8 +70,9 @@
                                             <img src="/static/img/null_profile.png" class="writer_profile">
                                         </c:when>
                                         <c:otherwise>
-                                            <img id="profile${status.index}" src="" class="writer_profile"/>
-                                            <input type="hidden" id="imgValue${status.index}" value="${reply.memberId}:${reply.profilePhoto}"/>
+                                            <img src="/member/get-profile?middlePath=${reply.memberId}&imageFileName=${reply.profilePhoto}" class="writer_profile view_profile">
+                                            <%--<img id="profile${status.index}" src="" class="writer_profile"/>--%>
+                                            <%--<input type="hidden" id="imgValue${status.index}" value="${reply.memberId}:${reply.profilePhoto}"/>--%>
                                         </c:otherwise>
                                     </c:choose>
                                     <div class="comment_content">

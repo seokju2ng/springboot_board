@@ -11,7 +11,7 @@
 <body>
     <div class="wrap">
         <jsp:include page="topbar.jsp"/>
-        <div class="title" onclick="$.setImage()">석주잉 게시판</div>
+        <div class="title">석주잉 게시판</div>
         <div class="top-bar">
             <div>
                 <select id="category" class="swal2-select">
