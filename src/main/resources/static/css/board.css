@@ -63,8 +63,10 @@ div.top-bar > div > select.swal2-select {
 
 table.board {
     width : 900px;
-    border-spacing: 0px;
+    border-spacing: 0;
     margin: 0 auto;
+    color: #333;
+    font-size: 11pt;
 }
 
 /*@media (max-width: 740px) {*/
@@ -104,7 +106,7 @@ table.board tr td:nth-child(5){ width: 8%; text-align: center;}
 table.board tr td:last-child{ width: 8%; text-align: center;}
 
 table.board tr td:nth-child(2):hover,
-table.board tr td:nth-child(3):hover {
+.member:hover {
     text-decoration: underline;
     cursor: pointer;
 }
@@ -124,4 +126,20 @@ span.page-num:hover{ cursor: pointer; }
     vertical-align: sub;
     width: 20px;
     height: 20px;
+}
+tr.notice {
+    background-color: #f9f9f8;
+}
+tr.notice td:first-child,
+tr.notice td:nth-child(2) {
+    color: red;
+    font-weight: bold;
+}
+tr.notice td:nth-child(3) {
+    text-align: center;
+}
+
+tr.top_like td:first-child,
+tr.top_like td:nth-child(2) {
+    font-weight: bold;
 }

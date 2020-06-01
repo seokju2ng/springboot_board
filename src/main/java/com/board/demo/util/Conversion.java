@@ -20,6 +20,8 @@ public class Conversion {
     private static final int MAX_IMAGE_LENGHT = 25;
 
     public static void convertDateFormatForArticleList(Article article) {
+        if (article.getDate().length() != 21)
+            return;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String today = sdf.format(new Date());
         if (article.getDate().substring(DATE_START, DATE_END).equals(today)) {

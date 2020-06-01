@@ -21,6 +21,7 @@ import java.util.Optional;
 @Slf4j
 public class BoardServiceImpl implements BoardService {
     private final String ALL_POSTS = "전체보기";
+    private final String NOTICE = "공지";
     private final int PREV_OR_NEXT = 0;
     private final int PREV_ARTICLE = 0;
     private final int NEXT_ARTICLE = 1;
@@ -83,6 +84,26 @@ public class BoardServiceImpl implements BoardService {
         mav.addObject("boards", boards);
         mav.addObject("totalPages", totalPages);
         return boards.size();
+    }
+
+    @Override
+    public List<Boardlist> getNotices() {
+        return boardlistRepository.findAllByCategory(NOTICE);
+    }
+
+    @Override
+    public List<Boardlist> getTopLikes() {
+        return boardlistRepository.findTop5ByOrderByLikesDesc();
+    }
+
+    @Override
+    public void convertArticleFormat(List<Boardlist> boards, List<Boardlist> notices, List<Boardlist> topLikes) {
+        boards.forEach(Conversion::convertDateFormatForArticleList);
+        notices.forEach(Conversion::convertDateFormatForArticleList);
+        topLikes.forEach(Conversion::convertDateFormatForArticleList);
+        Conversion.convertTitleLength(boards);
+        Conversion.convertTitleLength(notices);
+        Conversion.convertTitleLength(topLikes);
     }
 
     @Override

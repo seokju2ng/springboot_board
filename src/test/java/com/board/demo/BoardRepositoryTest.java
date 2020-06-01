@@ -119,4 +119,18 @@ public class BoardRepositoryTest {
             log.error( "There isn't a board no." + board_id);
         }
     }
+
+
+    @Test
+    public void selectNotice() {
+        String notice = "공지";
+        List<Boardlist> notices = boardlistRepository.findAllByCategory(notice);
+        log.info(notices.toString());
+    }
+
+    @Test
+    public void selectToplikes() {
+        List<Boardlist> topLikes = boardlistRepository.findTop5ByOrderByLikesDesc();
+        log.info(topLikes.toString());
+    }
 }

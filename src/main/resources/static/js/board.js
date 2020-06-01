@@ -23,12 +23,11 @@ $.showBoard = function (event) {
 $.setImage = () => {
     let profiles = $('.profile_photo');
     for (let i = 0; i < profiles.length; i++) {
-        let id = profiles[i].id.substr(7, profiles[i].id.length);
-        let value = $('#imgValue' + id).val().split(':');
+        let value = profiles[i].parentElement.children[1].value.split(':');
         let middlePath = value[0];
         let fileName = value[1];
         let src = '/member/get-profile?middlePath=' + encodeURI(middlePath) + '&imageFileName=' + encodeURI(fileName);
-        $('#profile' + id).attr('src', src);
+        profiles[i].src = src;
     }
 };
 

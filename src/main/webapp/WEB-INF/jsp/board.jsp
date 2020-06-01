@@ -11,7 +11,7 @@
 <body>
     <div class="wrap">
         <jsp:include page="topbar.jsp"/>
-        <div class="title">석주잉 게시판</div>
+        <div class="title" onclick="$.setImage()">석주잉 게시판</div>
         <div class="top-bar">
             <div>
                 <select id="category" class="swal2-select">
@@ -93,6 +93,47 @@
                     <th>조회</th>
                     <th><img src="/static/img/heart_full.png"></th>
                 </tr>
+            <c:forEach var="notice" items="${notices}" varStatus="status">
+                <tr class="notice">
+                    <td>${notice.category}</td>
+                    <td id="${notice.boardId}">
+                        ${notice.title}
+                        <c:if test="${notice.replies != 0}">
+                            <span class="replies">[${notice.replies}]</span>
+                        </c:if>
+                    </td>
+                    <td>
+                        <span>${notice.writerNickname}</span>
+                    </td>
+                    <td>${notice.date}</td>
+                    <td>${notice.views}</td>
+                    <td>${notice.likes}</td>
+                </tr>
+            </c:forEach>
+            <c:forEach var="topLike" items="${topLikes}" varStatus="status">
+                <tr class="top_like">
+                    <td>추천</td>
+                    <td id="${topLike.boardId}">
+                        <c:if test="${topLike.category != '없음'}">
+                            <span class="category">[${topLike.category}]</span>
+                        </c:if>
+                            ${topLike.title}
+                        <c:if test="${topLike.replies != 0}">
+                            <span class="replies">[${topLike.replies}]</span>
+                        </c:if>
+                    </td>
+                    <td class="member" id="m${topLike.writerId}">
+                        <c:if test="${topLike.profile != null}">
+                            <img id="profileL${status.index}" src="" class="profile_photo"/>
+                            <input type="hidden" id="imgValueL${status.index}" value="${topLike.writerId}:${topLike.profile}"/>
+                        </c:if>
+                        <span>${topLike.writerNickname}</span>
+                    </td>
+                    <td>${topLike.date}</td>
+                    <td>${topLike.views}</td>
+                    <td>${topLike.likes}</td>
+                </tr>
+            </c:forEach>
             <c:forEach var="board" items="${boards}" varStatus="status">
                 <tr>
                     <td>${board.boardId}</td>
@@ -107,8 +148,8 @@
                     </td>
                     <td class="member" id="m${board.writerId}">
                         <c:if test="${board.profile != null}">
-                            <img id="profile${status.index}" src="" class="profile_photo"/>
-                            <input type="hidden" id="imgValue${status.index}" value="${board.writerId}:${board.profile}"/>
+                            <img id="profileA${status.index}" src="" class="profile_photo"/>
+                            <input type="hidden" id="imgValueA${status.index}" value="${board.writerId}:${board.profile}"/>
                         </c:if>
                         <span>${board.writerNickname}</span>
                     </td>

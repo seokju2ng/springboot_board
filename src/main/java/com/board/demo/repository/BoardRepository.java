@@ -2,6 +2,7 @@ package com.board.demo.repository;
 
 
 import com.board.demo.vo.Board;
+import com.board.demo.vo.Boardlist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
