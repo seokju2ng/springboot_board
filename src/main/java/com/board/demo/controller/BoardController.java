@@ -54,23 +54,27 @@ public class BoardController {
         ModelAndView mav = new ModelAndView();
         Page<Boardlist> boardlistPage = boardService.getList(category, page - 1, size);
         List<Boardlist> boards = boardlistPage.getContent();
-        List<Boardlist> notices = boardService.getNotices();
-        List<Boardlist> topLikes = boardService.getTopLikes();
 
-        if (boards.size() == NOT_EXIST) {
-            return ErrorPage.show();
-        }
+//        if (boards.size() == NOT_EXIST) {
+//            return ErrorPage.show();
+//        }
 
+        boardService.convertArticleFormat(boards);
         List<Category> categories = categoryService.getList();
         int totalPage = boardlistPage.getTotalPages();
         int startPage = Conversion.calcStartPage(page);
 
-        boardService.convertArticleFormat(boards, notices, topLikes);
+        if (DEFAULT_CATEGORY.equals(category)) {
+            List<Boardlist> notices = boardService.getNotices();
+            List<Boardlist> topLikes = boardService.getTopLikes();
+            boardService.convertArticleFormat(notices);
+            boardService.convertArticleFormat(topLikes);
+            mav.addObject("notices", notices);
+            mav.addObject("topLikes", topLikes);
+        }
 
         mav.setViewName("board");
         mav.addObject("boards", boards);
-        mav.addObject("notices", notices);
-        mav.addObject("topLikes", topLikes);
         mav.addObject("categories", categories);
         mav.addObject("selectCategory", category);
         mav.addObject("selectSize", size);

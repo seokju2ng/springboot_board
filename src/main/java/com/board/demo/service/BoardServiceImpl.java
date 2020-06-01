@@ -97,13 +97,9 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void convertArticleFormat(List<Boardlist> boards, List<Boardlist> notices, List<Boardlist> topLikes) {
-        boards.forEach(Conversion::convertDateFormatForArticleList);
-        notices.forEach(Conversion::convertDateFormatForArticleList);
-        topLikes.forEach(Conversion::convertDateFormatForArticleList);
-        Conversion.convertTitleLength(boards);
-        Conversion.convertTitleLength(notices);
-        Conversion.convertTitleLength(topLikes);
+    public void convertArticleFormat(List<Boardlist> articles) {
+        articles.forEach(Conversion::convertDateFormatForArticleList);
+        Conversion.convertTitleLength(articles);
     }
 
     @Override

@@ -99,10 +99,12 @@
                             <th>댓글</th>
                             <th>작성일</th>
                         </tr>
-                        <c:if test="${fn:length(replies) == 0}">
+                        <c:set var="num_replies" value="${fn:length(replies)}" />
+                        <c:if test="${num_replies == 0}">
                             <tr><td colspan="2">작성하신 댓글이 없습니다.</td></tr>
                         </c:if>
-                        <c:forEach var="reply" items="${replies}">
+                        <c:forEach var="i" begin="1" end="${num_replies}" step="1">
+                            <c:set var="reply" value="${replies[num_replies-i]}" />
                             <tr>
                                 <td id="${reply.boardId}" class="shortcuts">${reply.content}</td>
                                 <td>${reply.date}</td>

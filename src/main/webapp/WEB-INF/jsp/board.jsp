@@ -93,6 +93,9 @@
                     <th>조회</th>
                     <th><img src="/static/img/heart_full.png"></th>
                 </tr>
+            <c:if test="${fn:length(boards) == 0}">
+                <tr><td colspan="6">해당하는 게시글이 없습니다.</td></tr>
+            </c:if>
             <c:forEach var="notice" items="${notices}" varStatus="status">
                 <tr class="notice">
                     <td>${notice.category}</td>

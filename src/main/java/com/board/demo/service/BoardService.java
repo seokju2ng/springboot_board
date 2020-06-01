@@ -33,5 +33,5 @@ public interface BoardService {
 
     List<Boardlist> getTopLikes();
 
-    void convertArticleFormat(List<Boardlist> boards, List<Boardlist> notices, List<Boardlist> topLikes);
+    public void convertArticleFormat(List<Boardlist> articles);
 }

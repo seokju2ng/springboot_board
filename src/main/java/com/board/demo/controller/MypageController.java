@@ -52,7 +52,7 @@ public class MypageController {
                                    @RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page,
                                    @RequestParam(value = "id", required = false) Long memberId,
                                    HttpServletRequest request) {
-        log.info("mypage > id: "+memberId);
+//        log.info("mypage > id: "+memberId);
         ModelAndView mav = new ModelAndView();
 
         if (Objects.isNull(memberId)) {

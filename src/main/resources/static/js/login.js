@@ -26,7 +26,28 @@ $.btnClick = function (btn) {
 };
 
 $.admin = function () {
-    location.href = '/admin';
+    // location.href = '/admin';
+    Swal.fire({
+        input: 'text',
+        title: '카테고리 등록',
+        text: '등록할 카테고리명을 입력하세요',
+        confirmButtonText: '등록',
+        confirmButtonColor: '#ff7799',
+        showCancelButton: true,
+        cancelButtonText: '닫기',
+    }).then((data) => {
+        if (data.value) {
+            $.ajax({
+                url: '/admin/add-category',
+                type: 'GET',
+                data: {category: data.value}
+            }).then((data) => {
+                if (data.result === SUCCESS) {
+                    location.reload(true);
+                }
+            })
+        }
+    })
 };
 
 $.mypage = function () {
