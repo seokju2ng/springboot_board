@@ -1,7 +1,7 @@
 $(document).ready(function(){
     $('span.page-num').eq(0).css('margin-left', '15px');
     $('span.page-num').eq($('span.page-num').length - 1).css('margin-right', '15px');
-    $.setImage();
+    // $.setImage();
 
     $('button#write').click($.write);
     $('select#category').change($.reload);
@@ -20,16 +20,16 @@ $.showBoard = function (event) {
     location.href = "/board/"+idx;
 };
 
-$.setImage = () => {
-    let profiles = $('.profile_photo');
-    for (let i = 0; i < profiles.length; i++) {
-        let value = profiles[i].parentElement.children[1].value.split(':');
-        let middlePath = value[0];
-        let fileName = value[1];
-        let src = '/member/get-profile?middlePath=' + encodeURI(middlePath) + '&imageFileName=' + encodeURI(fileName);
-        profiles[i].src = src;
-    }
-};
+// $.setImage = () => {
+//     let profiles = $('.profile_photo');
+//     for (let i = 0; i < profiles.length; i++) {
+//         let value = profiles[i].parentElement.children[1].value.split(':');
+//         let middlePath = value[0];
+//         let fileName = value[1];
+//         let src = '/member/get-profile?middlePath=' + encodeURI(middlePath) + '&imageFileName=' + encodeURI(fileName);
+//         profiles[i].src = src;
+//     }
+// };
 
 
 $.prev = function (startPage) {

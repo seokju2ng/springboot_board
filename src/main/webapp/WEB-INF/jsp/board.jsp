@@ -127,8 +127,9 @@
                     </td>
                     <td class="member" id="m${topLike.writerId}">
                         <c:if test="${topLike.profile != null}">
-                            <img id="profileL${status.index}" src="" class="profile_photo"/>
-                            <input type="hidden" id="imgValueL${status.index}" value="${topLike.writerId}:${topLike.profile}"/>
+                            <img src="/member/get-profile?middlePath=${topLike.writerId}&imageFileName=${topLike.profile}" class="profile_photo">
+                            <%--<img id="profileL${status.index}" src="" class="profile_photo"/>--%>
+                            <%--<input type="hidden" id="imgValueL${status.index}" value="${topLike.writerId}:${topLike.profile}"/>--%>
                         </c:if>
                         <span>${topLike.writerNickname}</span>
                     </td>
@@ -151,8 +152,9 @@
                     </td>
                     <td class="member" id="m${board.writerId}">
                         <c:if test="${board.profile != null}">
-                            <img id="profileA${status.index}" src="" class="profile_photo"/>
-                            <input type="hidden" id="imgValueA${status.index}" value="${board.writerId}:${board.profile}"/>
+                            <img src="/member/get-profile?middlePath=${board.writerId}&imageFileName=${board.profile}" class="profile_photo">
+                            <%--<img id="profileA${status.index}" src="" class="profile_photo"/>--%>
+                            <%--<input type="hidden" id="imgValueA${status.index}" value="${board.writerId}:${board.profile}"/>--%>
                         </c:if>
                         <span>${board.writerNickname}</span>
                     </td>
