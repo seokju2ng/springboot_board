@@ -39,7 +39,7 @@ body {
 .writer_profile_box {
     margin-right: 10px;
 }
-.writer_profile {
+.view_profile {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -108,7 +108,9 @@ div.views {
 .comment_delete_button {
     color: #888888;
 }
-.comment_delete_button:hover, .comment_info_button:hover {
+.comment_delete_button:hover,
+.comment_info_button:hover,
+.view_profile:hover {
     cursor: pointer;
 }
 .comment_info_date {

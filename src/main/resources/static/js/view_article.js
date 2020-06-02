@@ -89,7 +89,7 @@ function writeReply(parent, to) {
         content = '<b>'+to+'</b> ' + $('.recomment_write_input').val();
     }
     let objArray = [
-        { name: 'content', value: content },
+        { name: 'content', value: defend(content) },
         { name: 'parent', value: parent},
         { name: 'boardId', value: boardId },
     ];

@@ -17,7 +17,7 @@
                 <select id="category" class="swal2-select">
                     <option value=전체보기>전체보기</option>
                     <c:forEach var="category" items="${categories}">
-                        <c:if test="${category.categoryId != 9999}">
+                        <c:if test="${category.categoryId != 0}">
                             <c:choose>
                                 <c:when test="${selectCategory == category.categoryName}">
                                     <option value="${category.categoryName}" selected>${category.categoryName}</option>

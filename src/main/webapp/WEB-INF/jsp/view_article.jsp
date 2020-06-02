@@ -18,13 +18,13 @@
                 </div>
                 <div class="writer_info">
                     <div>
-                        <div class="writer_profile_box">
+                        <div class="view_profile_box">
                             <c:choose>
                                 <c:when test="${article.profile == null}">
-                                    <img src="/static/img/null_profile.png" class="writer_profile article_profile"/>
+                                    <img src="/static/img/null_profile.png" class="view_profile article_profile"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <img src="/member/get-profile?middlePath=${article.writerId}&imageFileName=${article.profile}" class="writer_profile view_profile">
+                                    <img src="/member/get-profile?middlePath=${article.writerId}&imageFileName=${article.profile}" class="view_profile ">
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -67,11 +67,11 @@
                                 <div id="comment_area${reply.replyId}" class="comment_area">
                                     <c:choose>
                                         <c:when test="${reply.profilePhoto == null}">
-                                            <img src="/static/img/null_profile.png" class="writer_profile">
+                                            <img src="/static/img/null_profile.png" class="view_profile">
                                         </c:when>
                                         <c:otherwise>
-                                            <img src="/member/get-profile?middlePath=${reply.memberId}&imageFileName=${reply.profilePhoto}" class="writer_profile view_profile">
-                                            <%--<img id="profile${status.index}" src="" class="writer_profile"/>--%>
+                                            <img src="/member/get-profile?middlePath=${reply.memberId}&imageFileName=${reply.profilePhoto}" class="view_profile ">
+                                            <%--<img id="profile${status.index}" src="" class="view_profile"/>--%>
                                             <%--<input type="hidden" id="imgValue${status.index}" value="${reply.memberId}:${reply.profilePhoto}"/>--%>
                                         </c:otherwise>
                                     </c:choose>

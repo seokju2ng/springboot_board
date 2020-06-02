@@ -6,7 +6,50 @@ $(document).ready(() => {
     $('.content_subtitle.not_selected').click($.changeType);
     $('.shortcuts').click($.showArticle);
     $('.view_profile').click($.showImage);
+    $('.btn_default_profile').click($.setDefaultProfile);
 });
+
+$.setDefaultProfile = function () {
+    Swal.fire({
+        title: '프로필 사진',
+        text: '프로필 사진을 기본 사진으로 변경하시겠습니까?',
+        icon: 'question',
+        confirmButtonColor: '#ff7799',
+        confirmButtonText: '예',
+        showCancelButton: true,
+        cancelButtonText: '아니오'
+    }).then(data => {
+        if (data.value) {
+            let id = $('.nick_area').attr('id');
+            id = id.substr(3);
+            $.ajax({
+                url: '/mypage/set-default-profile',
+                type: 'GET',
+                data: {id: id},
+                success: (data) => {
+                    switch (data.result) {
+                        case SUCCESS:
+                            Swal.fire({
+                                title: "프로필 변경",
+                                text: "프로필 변경에 성공하였습니다!",
+                                icon: 'success',
+                                confirmButtonColor: '#ff7799'
+                            }).then(()=>{
+                                location.reload(true);
+                            });
+                            break;
+                        case FAIL:
+                            Swal.fire('프로필 변경', '변경에 실패하였습니다.', 'error');
+                            break;
+                        case INVALID_APPROACH:
+                            Swal.fire('프로필 변경', '접근할 수 없음', 'error');
+                            break;
+                    }
+                }
+            })
+        }
+    });
+};
 
 $.showImage = function (event) {
     let id = event.target.src.split("=")[1].split('&')[0];

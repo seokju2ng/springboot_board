@@ -5,6 +5,7 @@ import com.board.demo.service.MemberService;
 import com.board.demo.service.MypageService;
 import com.board.demo.service.ReplyService;
 import com.board.demo.util.Conversion;
+import com.board.demo.util.ErrorPage;
 import com.board.demo.util.FileIO;
 import com.board.demo.vo.Member;
 import com.board.demo.vo.Mypage;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.board.demo.util.Constants.*;
+import static java.util.Objects.isNull;
 
 @Slf4j
 @Controller
@@ -55,9 +57,9 @@ public class MypageController {
 //        log.info("mypage > id: "+memberId);
         ModelAndView mav = new ModelAndView();
 
-        if (Objects.isNull(memberId)) {
+        if (isNull(memberId)) {
             Member loginMember = (Member) request.getSession().getAttribute("loginMember");
-            if (Objects.isNull(loginMember)) {
+            if (isNull(loginMember)) {
                 mav.setViewName("redirect:/board");
                 return mav;
             }
@@ -65,7 +67,9 @@ public class MypageController {
         }
 
         Mypage mypage = mypageService.getMypageInfo(memberId);
-        mav.addObject("mypage", mypage);
+        if (isNull(mypage)) {
+            return ErrorPage.show();
+        }
 
         if (type.equals(DEFAULT_TYPE)) {    // 등록한 게시글 요청
             boardService.getListByMemberId(memberId, page - 1, DEFAULT_LIST_SIZE, mav);
@@ -74,6 +78,7 @@ public class MypageController {
         }
 
         int startPage = Conversion.calcStartPage(page);
+        mav.addObject("mypage", mypage);
         mav.addObject("type", type);
         mav.addObject("curPage", page);
         mav.addObject("startPage", startPage);
@@ -99,22 +104,44 @@ public class MypageController {
 //        log.info(file.getName());
         Member loginMember = (Member) request.getSession().getAttribute("loginMember");
         JSONObject res = new JSONObject();
-        if (Objects.isNull(loginMember) || file.isEmpty()) {
+        if (isNull(loginMember) || file.isEmpty()) {
             // exception
             res.put("result", INVALID_APPROACH);
         }
-        String folder = loginMember.getMemberId() + "";
-        String filename = Conversion.convertImageName(file.getOriginalFilename());
-        if (FileIO.saveImage(folder, filename, file.getBytes())) {
-            if (memberService.setProfilePhoto(loginMember.getMemberId(), filename)) {
+        else {
+            String folder = loginMember.getMemberId() + "";
+            String filename = Conversion.convertImageName(file.getOriginalFilename());
+            if (FileIO.saveImage(folder, filename, file.getBytes())) {
+                if (memberService.setProfilePhoto(loginMember.getMemberId(), filename)) {
+                    res.put("result", SUCCESS);
+                } else {
+                    res.put("result", FAIL);
+                }
+            } else {
+                res.put("result", FAIL);
+            }
+        }
+
+        response.setContentType("application/json; charset=utf-8");
+        response.getWriter().print(res);
+    }
+
+    @GetMapping("/set-default-profile")
+    public void setDefaultProfileImage(@RequestParam int id,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) throws IOException {
+        Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+        JSONObject res = new JSONObject();
+        if (isNull(loginMember) || loginMember.getMemberId() != id) {
+            res.put("result", INVALID_APPROACH);
+        }
+        else {
+            if (memberService.setProfilePhoto(loginMember.getMemberId(), null)) {
                 res.put("result", SUCCESS);
             } else {
                 res.put("result", FAIL);
             }
-        } else {
-            res.put("result", FAIL);
         }
-
         response.setContentType("application/json; charset=utf-8");
         response.getWriter().print(res);
     }

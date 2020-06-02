@@ -25,6 +25,15 @@
 }
 .desc {
     padding-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.desc > div:last-child {
+    text-align: right;
+}
+.btn_default_profile {
+    color: #777;
+    font-size: 10pt;
 }
 .count {
     color: #999999;
@@ -53,7 +62,8 @@
 .content_subtitle:last-child {
     border-left: 1px solid #cccccc;
 }
-.not_selected:hover {
+.not_selected:hover,
+.btn_default_profile:hover {
     text-decoration: underline;
     cursor: pointer;
 }

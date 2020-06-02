@@ -55,111 +55,117 @@ $.mypage = function () {
 };
 
 $.join = async function () {
-    let inputId = await $.swalInput('text', '회원가입', '사용할 아이디를 입력하세요', '다음 &rarr;');
+    let inputId = await $.inputId();
     if (inputId === undefined) return;
     $.ajax({
         url: '/member/check-duplicate',
         type: 'GET',
         data: {id : inputId},
-        success: async function (data) {
-            if (data.result === DUPLICATE) {
-                Swal.fire("아이디 중복", "다른 아이디를 입력해주세요", "error").then($.join);
-            } else {
-                let inputPwd = await $.joinPwd();
-                if (inputPwd === undefined) return;
-                let inputEmail = await $.joinEmail();
-                if (inputEmail === undefined) return;
-                let inputNick = await $.swalInput('text', '회원가입', '닉네임을 입력하세요', '회원가입');
-                if (inputNick === undefined) return;
-                $.ajax({
-                    url: '/member/join',
-                    type: 'POST',
-                    data: {id: inputId, pwd: inputPwd, email: inputEmail, nick: inputNick},
-                    success: function (data) {
-                        if (data.result === SUCCESS) {
-                            Swal.fire({
-                                title: '회원가입 완료',
-                                text: '로그인 창으로 이동합니다',
-                                icon: 'success',
-                                confirmButtonColor: '#ff7799'
-                            }).then(()=>$.login());
-                        } else {
-                            Swal.fire({
-                                title: '가입 실패',
-                                text: '회원가입에 실패하였습니다',
-                                icon: 'error',
-                                confirmButtonColor: '#ff7799'
-                            });
-                        }
-                    }
-                })
-            }
-        }
+        success: (data) => $.duplicateResult(data, inputId)
     });
-}
+};
 
-/* 닉네임 중복체크 필요하면 쓸 함수
- * 현재는 닉네임 중복 가능한 정책
-$.joinNick = async function () {
-    let inputNick = await $.swalInput('text', '회원가입', '닉네임을 입력하세요', '회원가입');
-    if (inputNick === undefined) return;
-    $.ajax({
-        url: '/member/check-duplicate-nick',
-        type: 'GET',
-        data: {nick: inputNick},
-        success: function(data) {
-            if (data.result === DUPLICATE) {
-                Swal.fire("닉네임 중복", "다른 닉네임을 입력해주세요", "error").then($.joinNick);
-            } else {
-                return inputNick;
-            }
-        }
-    });
-}
-*/
+$.duplicateResult = async function (data, inputId) {
+    if (data.result === DUPLICATE) {
+        Swal.fire({
+            title: "아이디 중복",
+            text: "다른 아이디를 입력해주세요",
+            icon: "error",
+            confirmButtonColor: '#ff7799'
+        }).then($.join);
+    } else {
+        let inputPwd = await $.inputPwd();
+        if (inputPwd === undefined) return;
+        let inputEmail = await $.inputEmail();
+        if (inputEmail === undefined) return;
+        let inputNick = await $.inputNickname();
+        if (inputNick === undefined) return;
+        $.ajax({
+            url: '/member/join',
+            type: 'POST',
+            data: {id: inputId, pwd: inputPwd, email: inputEmail, nick: inputNick},
+            success: $.joinResult
+        })
+    }
+};
 
-$.joinEmail = async function () {
-    let inputEmail = await $.swalInput('email', '회원가입', '이메일 주소를 입력하세요', '다음 &rarr;');
-    if (inputEmail === undefined) return undefined;
-    if (!isRight()) {   // 이메일 유효성 정규 표현식
-        await Swal.fire({
-            title: '유효성 실패',
-            text: '유효하지 않은 이메일 주소입니다.',
+$.joinResult = function (data) {
+    if (data.result === SUCCESS) {
+        Swal.fire({
+            title: '회원가입 완료',
+            text: '로그인 창으로 이동합니다',
+            icon: 'success',
+            confirmButtonColor: '#ff7799'
+        }).then(()=>$.login());
+    } else {
+        Swal.fire({
+            title: '가입 실패',
+            text: '회원가입에 실패하였습니다',
             icon: 'error',
             confirmButtonColor: '#ff7799'
         });
-        return await $.joinEmail();
+    }
+};
+
+$.warningMessage = async function(title, content) {
+    await Swal.fire({
+        title: title,
+        text: content,
+        icon: "warning",
+        confirmButtonColor: '#ff7799'
+    });
+};
+
+$.inputId = async function () {
+    let inputId = await $.swalInput('text', '회원가입', '사용할 아이디를 입력하세요', '다음 &rarr;');
+    if (inputId === undefined) return undefined;
+    inputId = defend(inputId);
+    let idRegExp = /^[a-zA-Z][0-9a-zA-Z_-]{5,19}$/;
+    if (!idRegExp.test(inputId)) {
+        await $.warningMessage('아이디 유효조건', '영문으로 시작 / 영문, 숫자, 특문(-,_) 가능 / 6-20자');
+        return await $.inputId();
+    }
+    return inputId;
+};
+
+$.inputNickname = async function () {
+    let inputNick = await $.swalInput('text', '회원가입', '닉네임을 입력하세요', '회원가입');
+    if (inputNick === undefined) return undefined;
+    inputNick = defend(inputNick);
+    let nickRegExp = /^[^\t\r\n\v\f]{2,15}$/;   // 모든 문자 2-15자
+    if (!nickRegExp.test(inputNick)) {
+        await $.warningMessage('닉네임 유효조건', '닉네임은 2-15자 입니다.');
+        return await $.inputNickname();
+    }
+    return inputNick;
+};
+
+$.inputEmail = async function () {
+    let inputEmail = await $.swalInput('email', '회원가입', '이메일 주소를 입력하세요', '다음 &rarr;');
+    if (inputEmail === undefined) return undefined;
+    inputEmail = defend(inputEmail);
+    let emailRegExp = /^[a-z0-9_]{5,20}@[a-z]{2,15}\.(com|net|co.kr|ac.kr|kr)$/;
+    if (!emailRegExp.test(inputEmail)) {   // 이메일 유효성 정규 표현식
+        await $.warningMessage('이메일 유효조건', '이메일 형식으로 입력해주세요!');
+        return await $.inputEmail();
     }
     return inputEmail;
-}
+};
 
-function isRight() {
-    return true;
-}
-
-$.joinPwd = async function () {
+$.inputPwd = async function () {
     let inputPwd = await $.swalTwoInputs('password', '회원가입', '비밀번호를 입력하세요', '비밀번호', '비밀번호 확인', '다음 &rarr;', '$.enter(this)');
     if (inputPwd === undefined) return undefined;
     if (inputPwd[0] !== inputPwd[1]) {
-        await Swal.fire({
-            title: "비밀번호 불일치",
-            text: "입력하신 두 비밀번호가 일치하지 않습니다.",
-            icon: "error",
-            confirmButtonColor: '#ff7799'
-        });
-        return await $.joinPwd();
+        await $.warningMessage('비밀번호 불일치', '입력하신 두 비밀번호가 일치하지 않습니다!');
+        return await $.inputPwd();
     }
-    if (inputPwd[0].trim() === "") {
-        await Swal.fire({
-            title: "비밀번호 오류",
-            text: "비밀번호는 공백이 될 수 없습니다.",
-            icon: "error",
-            confirmButtonColor: '#ff7799'
-        });
-        return await $.joinPwd();
+    let pwdRegExp = /^[a-zA-Z0-9~!#$^&*?]{6,20}$/;
+    if (inputPwd[0].trim() === "" || !pwdRegExp.test(inputPwd[0])) {
+        await $.warningMessage('비밀번호 유효조건','영어, 숫자, 특수문자(~!#$^&*?) 가능 / 6-20자');
+        return await $.inputPwd();
     }
     return inputPwd[0];
-}
+};
 
 $.findPwd = function () {
     Swal.fire('find');
@@ -176,7 +182,7 @@ $.enter = function (input) {
                 break;
         }
     }
-}
+};
 
 $.logout = function () {
     $.ajax({
@@ -203,7 +209,7 @@ $.logout = function () {
             }
         }
     });
-}
+};
 
 $.login = async function (where) {
     let join = '<span id="join" class="popup_footer" onclick="$.btnClick(this)">회원가입</span>';
@@ -253,7 +259,7 @@ $.login = async function (where) {
             }
         }
     });
-}
+};
 
 $.swalInput = async function (input, title, text, confirmButtonText, footer) {
     const {value : val} = await Swal.fire({
@@ -276,7 +282,7 @@ $.swalInput = async function (input, title, text, confirmButtonText, footer) {
         }
     });
     return val;
-}
+};
 
 $.swalTwoInputs = async function (input, title, text, placeholder1, placeholder2, confirmButtonText, enter) {
     const {value : val} = await Swal.fire({
@@ -298,4 +304,4 @@ $.swalTwoInputs = async function (input, title, text, placeholder1, placeholder2
         }
     });
     return val;
-}
+};

@@ -16,7 +16,7 @@
             <select name="category" class="swal2-select">
                 <c:forEach var="category" items="${categories}">
                     <c:choose>
-                        <c:when test="${category.categoryId == 9999}">
+                        <c:when test="${category.categoryId == 0}">
                             <c:if test="${loginMember.memberId == 0}">
                                 <option value="${category.categoryId}" <c:if test="${category.categoryName == article.category}">selected</c:if>>${category.categoryName}</option>
                             </c:if>

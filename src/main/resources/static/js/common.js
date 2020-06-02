@@ -39,3 +39,16 @@ $.fn.swalClickCancel = function (backUrl) {
         });
     });
 };
+
+function defend(value) {
+    value = value+"";
+    value = value.trim();
+    // value = value.replace(/</gi, "&lt;").replace(/>/gi, "&gt;");
+    // value = value.replace(/\\(/gi, "& #40;").replace(/\\)/gi, "& #41;");
+    value = value.replace(/'/gi, "&#39;");
+    value = value.replace(/eval\\((.*)\\)/gi, "");
+    value = value.replace(/[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']/gi, "\"\"");
+    value = value.replace(/<script/gi, "");
+    value = value.replace(/<\/script/gi, "");
+    return value;
+}

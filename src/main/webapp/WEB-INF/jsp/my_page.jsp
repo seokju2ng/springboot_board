@@ -27,7 +27,7 @@
                 <img src="/member/get-profile?middlePath=${mypage.memberId}&imageFileName=${mypage.profilePhoto}" class="profile_photo
                 <c:choose>
                     <c:when test="${mypage.memberId == loginMember.memberId}">
-                        my_profile" onclick="$.fileUpload()">
+                        " onclick="$.fileUpload()">
                     </c:when>
                     <c:otherwise>
                         view_profile">
@@ -39,9 +39,16 @@
         <div class="text">
             <div id="mem${mypage.memberId}" class="nick_area">${mypage.nickname}(${mypage.id})</div>
             <div class="desc">
-                <span class="count">총 방문<em class="num">${mypage.attendance}</em>회</span>
-                <span class="count">총 게시글<em class="num">${mypage.boardNum}</em>개</span>
-                <span class="count">총 댓글<em class="num">${mypage.replyNum}</em>개</span>
+                <div>
+                    <span class="count">총 방문<em class="num">${mypage.attendance}</em>회</span>
+                    <span class="count">총 게시글<em class="num">${mypage.boardNum}</em>개</span>
+                    <span class="count">총 댓글<em class="num">${mypage.replyNum}</em>개</span>
+                </div>
+                <div>
+                    <c:if test="${mypage.memberId == loginMember.memberId and mypage.profilePhoto != null}">
+                    <span class="btn_default_profile">기본 프로필 사진으로 변경</span>
+                    </c:if>
+                </div>
             </div>
         </div>
     </div>

@@ -19,8 +19,8 @@ $.write = function () {
             type: "POST",
             data: {
                 category: document.write.category.value,
-                title: document.write.title.value,
-                content: document.write.content.value
+                title: defend(document.write.title.value),
+                content: defend(document.write.content.value)
             },
             success: function (data) {
                 switch (data.result) {
