@@ -104,7 +104,7 @@
                                                     <span id="${parent} ${reply.replyId} ${reply.nickname}" class="comment_info_button">답글쓰기</span>
                                                 </c:if>
                                             </div>
-                                            <c:if test="${loginMember != null and loginMember.memberId == reply.memberId}">
+                                            <c:if test="${loginMember != null and (loginMember.memberId == reply.memberId or loginMember.memberId == 0)}">
                                             <div class="comment_info_delete">
                                                 <span class="comment_delete_button" onclick="deleteReply(${reply.parent}, ${reply.replyId})">삭제</span>
                                             </div>
@@ -130,7 +130,7 @@
             <div class="article_bottom_bar">
                 <div class="article_bottom_left">
                     <button class="button1" onclick="viewBoard()">목록</button>
-                    <c:if test="${article.writerId == loginMember.memberId}">
+                    <c:if test="${article.writerId == loginMember.memberId or loginMember.memberId == 0}">
                         <button class="button1" onclick="modifyArticle()">수정</button>
                         <button class="button1" onclick="deleteArticle()">삭제</button>
                     </c:if>

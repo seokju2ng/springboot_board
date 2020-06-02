@@ -20,9 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 import static com.board.demo.util.Constants.*;
+import static java.util.Objects.isNull;
 
 @Slf4j
 @Controller
@@ -32,7 +32,7 @@ public class BoardController {
     private final String DEFAULT_PAGE = "1";
     private final String DEFAULT_LIST_SIZE = "10";
     private final String ON = "ON";
-    private final int NOT_EXIST = 0;
+    private final int MAIN_PAGE= 1;
 
     @Autowired
     private BoardService boardService;
@@ -55,16 +55,13 @@ public class BoardController {
         Page<Boardlist> boardlistPage = boardService.getList(category, page - 1, size);
         List<Boardlist> boards = boardlistPage.getContent();
 
-//        if (boards.size() == NOT_EXIST) {
-//            return ErrorPage.show();
-//        }
-
         boardService.convertArticleFormat(boards);
         List<Category> categories = categoryService.getList();
         int totalPage = boardlistPage.getTotalPages();
         int startPage = Conversion.calcStartPage(page);
 
-        if (DEFAULT_CATEGORY.equals(category)) {
+        if ( category.equals(DEFAULT_CATEGORY) &&
+                page == MAIN_PAGE ) {
             List<Boardlist> notices = boardService.getNotices();
             List<Boardlist> topLikes = boardService.getTopLikes();
             boardService.convertArticleFormat(notices);
@@ -89,7 +86,7 @@ public class BoardController {
         ModelAndView mav = new ModelAndView();
         Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 
-        if (Objects.isNull(loginMember)) {
+        if (isNull(loginMember)) {
             mav.setViewName("redirect:/board");
             return mav;
         }
@@ -107,7 +104,7 @@ public class BoardController {
         JSONObject res = new JSONObject();
         Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 
-        if (Objects.isNull(loginMember)) {
+        if (isNull(loginMember)) {
             res.put(RESULT, INVALID_APPROACH);
         }
         else if (boardService.write(loginMember.getMemberId(), title, content, category)) {
@@ -128,7 +125,7 @@ public class BoardController {
         }
         Member member = (Member)request.getSession().getAttribute("loginMember");
         ModelAndView mav = new ModelAndView();
-        if (!Objects.isNull(member)) {
+        if (!isNull(member)) {
             boolean isLike = memberLikeBoardService.isLike(boardId, member.getMemberId());
             mav.addObject("isLike", isLike);
         }
@@ -182,8 +179,8 @@ public class BoardController {
         Boardlist article = boardService.getPostById(boardId);
         Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 
-        if ( Objects.isNull(article) ||
-             Objects.isNull(loginMember) ||
+        if ( isNull(article) ||
+             isNull(loginMember) ||
             (loginMember.getMemberId() != article.getWriterId()) ) {
             return ErrorPage.show();
         }
@@ -206,8 +203,8 @@ public class BoardController {
         Member loginMember = (Member) request.getSession().getAttribute("loginMember");
         JSONObject res = new JSONObject();
 
-        if ( Objects.isNull(article) ||
-             Objects.isNull(loginMember) ||
+        if ( isNull(article) ||
+             isNull(loginMember) ||
             (loginMember.getMemberId() != article.getWriter()) ) {
             res.put(RESULT, INVALID_APPROACH);
         }
@@ -230,7 +227,7 @@ public class BoardController {
         JSONObject res = new JSONObject();
         Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 
-        if (Objects.isNull(loginMember)) {
+        if (isNull(loginMember)) {
             res.put(RESULT, INVALID_APPROACH);
         }
         else if (ON.equals(flag)) { // like on
@@ -255,9 +252,10 @@ public class BoardController {
         Board article = boardService.getBoardById(boardId);
         Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 
-        if ( Objects.isNull(article) ||
-             Objects.isNull(loginMember) ||
-            (loginMember.getMemberId() != article.getWriter()) ) {
+        if ( isNull(article) ||
+             isNull(loginMember) ||
+            (loginMember.getMemberId() != article.getWriter() &&
+             loginMember.getMemberId() != ADMIN_ID )) {
             return ErrorPage.show();
         }
 

@@ -51,7 +51,7 @@ public class MemberController {
             HttpSession session = request.getSession();
             session.setAttribute("loginMember", loginMember);
             if (loginMember.getMemberId() == 0) {
-                res.put(RESULT, ADMIN);
+                res.put(RESULT, ADMIN_ID);
                 log.info("** ADMIN has logged in **");
             } else {
                 res.put(RESULT, SUCCESS);

@@ -2,7 +2,7 @@ package com.board.demo.util;
 
 public class Constants
 {
-    public static final int ADMIN = 0;
+    public static final int ADMIN_ID = 0;
     public static final int SUCCESS = 1;
 
 

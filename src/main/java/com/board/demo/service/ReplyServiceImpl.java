@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.board.demo.util.Constants.ADMIN_ID;
+
 @Service
 public class ReplyServiceImpl implements ReplyService {
     private final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -67,9 +69,13 @@ public class ReplyServiceImpl implements ReplyService {
         if (Objects.isNull(member)) {
             return false;
         }
-        Optional<Reply> resReply = replyRepository.findByReplyIdAndParentAndWriter(replyId, parent, member.getMemberId());
+        Optional<Reply> resReply = replyRepository.findByReplyIdAndParent(replyId, parent);
 
         if (!resReply.isPresent()) {
+            return false;
+        }
+        if (resReply.get().getWriter() != member.getMemberId() &&
+                member.getMemberId() != ADMIN_ID ) {
             return false;
         }
         List<Reply> replies = replyRepository.findAllByParent(parent);

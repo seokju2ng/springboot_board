@@ -22,8 +22,6 @@ import static com.board.demo.util.Constants.*;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    private static final int ADMIN_ID = 0;
-
     @Autowired
     private CategoryService categoryService;
 
