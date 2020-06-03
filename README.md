@@ -10,7 +10,7 @@
   - 말머리 추가, 공지 작성(상단 노출), 회원의 글 / 댓글 삭제 등
 
 <br>
-<p align="center"><img src="/screenshot/home.png" style="border: 1px solid #555;"></p>
+<p align="center""><kbd><img src="/screenshot/home.png"></kbd></p>
 <br>
 
 #### 기술스택
