@@ -33,14 +33,6 @@
             <div>
                 <select id="list-size" class="swal2-select">
                     <c:choose>
-                        <c:when test="${selectSize == 1}">
-                            <option value="1" selected>1개씩 보기</option>
-                        </c:when>
-                        <c:otherwise>
-                            <option value="1">1개씩 보기</option>
-                        </c:otherwise>
-                    </c:choose>
-                    <c:choose>
                         <c:when test="${selectSize == 5}">
                             <option value="5" selected>5개씩 보기</option>
                         </c:when>
