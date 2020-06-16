@@ -1,6 +1,5 @@
-package com.board.demo;
+package com.board.demo.repository;
 
-import com.board.demo.repository.CategoryRepository;
 import com.board.demo.vo.Category;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -22,7 +21,8 @@ public class CategoryRepositoryTest {
     private CategoryRepository categoryRepository;
 
     @Test
-    public void create(){
+    @Transactional
+    public void create() {
         String categoryName = "여행";
         Category category = Category.builder()
                 .categoryName(categoryName)
@@ -32,19 +32,19 @@ public class CategoryRepositoryTest {
     }
 
     @Test
-    public void readAll(){
+    public void readAll() {
         List<Category> category = categoryRepository.findAll();
         category.forEach(x -> log.info(x.toString()));
     }
 
     @Test
     @Transactional
-    public void update(){
+    public void update() {
         Optional<Category> category = categoryRepository.findById(1L);
         category.ifPresent(selectCategory -> {
             selectCategory.setCategoryName("바바");
             Category newCategory = categoryRepository.save(selectCategory);
-            System.out.println("category: "+newCategory);
+            System.out.println("category: " + newCategory);
         });
     }
 }

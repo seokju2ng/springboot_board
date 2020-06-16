@@ -127,6 +127,8 @@ buildNumber.properties
 ### etc ###
 .DS_Store
 *.DS_Store
+seokju2ng-board.pem
+application-db.properties
 
 
 # End of https://www.gitignore.io/api/web,java,maven,java-web,intellij

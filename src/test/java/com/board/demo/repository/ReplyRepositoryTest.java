@@ -1,6 +1,5 @@
-package com.board.demo;
+package com.board.demo.repository;
 
-import com.board.demo.repository.ReplyRepository;
 import com.board.demo.vo.Reply;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -11,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-import javax.validation.constraints.AssertFalse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +24,7 @@ public class ReplyRepositoryTest {
     private ReplyRepository replyRepository;
 
     @Test
-//    @Transactional
+    @Transactional
     public void create() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date today = new Date();
@@ -58,7 +56,7 @@ public class ReplyRepositoryTest {
 
     @Test
     @Transactional
-    public void deleteFalse () {
+    public void deleteFalse() {
         long replyId = 27L;
         long parent = 25L;
         long memberId = 2L;
@@ -68,7 +66,7 @@ public class ReplyRepositoryTest {
 
     @Test
     @Transactional
-    public void deleteParentTrue () { // 기본 댓글일 때
+    public void deleteParentTrue() { // 기본 댓글일 때
         long replyId = 16L;
         long parent = 16L;
         long memberId = 22L;
@@ -92,6 +90,4 @@ public class ReplyRepositoryTest {
             }
         }
     }
-
-
 }

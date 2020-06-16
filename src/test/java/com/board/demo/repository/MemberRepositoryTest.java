@@ -1,6 +1,5 @@
-package com.board.demo;
+package com.board.demo.repository;
 
-import com.board.demo.repository.MemberRepository;
 import com.board.demo.util.HashFunction;
 import com.board.demo.vo.Member;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -40,7 +38,7 @@ public class MemberRepositoryTest {
 
         try {
             Member newMember = memberRepository.save(member);
-            log.info("New Member[" + newMember.getMemberId() + " : "+ id + "] has just signed up.");
+            log.info("New Member[" + newMember.getMemberId() + " : " + id + "] has just signed up.");
         } catch (Exception e) {
             log.warn(e.toString());
         }
@@ -72,7 +70,7 @@ public class MemberRepositoryTest {
     @Test
     @Transactional
     public void delete() {
-        long id = 7L;
+        long id = 1L;
 
         Optional<Member> member = memberRepository.findById(id);
 

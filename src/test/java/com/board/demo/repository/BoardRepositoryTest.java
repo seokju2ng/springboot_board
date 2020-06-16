@@ -1,4 +1,4 @@
-package com.board.demo;
+package com.board.demo.repository;
 
 import com.board.demo.repository.BoardRepository;
 import com.board.demo.repository.BoardlistRepository;
@@ -109,7 +109,7 @@ public class BoardRepositoryTest {
     }
 
     @Test
-
+    @Transactional
     public void deleteArticle() {
         long board_id = 2L;
         try {
